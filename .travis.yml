@@ -3,7 +3,7 @@ language: generic
 matrix:
   include:
   - env: PROJECT=projects/web-ui/
-    node_js: lts
+    node_js: node
   - stage: Deploy
     script: echo DEPLOYING
 
