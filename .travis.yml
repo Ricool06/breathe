@@ -1,12 +1,11 @@
-addons:
-  chrome: stable
-
 matrix:
   include:
   - env: PROJECT=projects/web-ui/
     language: node_js
     node_js: node
     cache: npm
+    addons:
+      chrome: stable
   - stage: Deploy
     script: echo DEPLOYING
 
