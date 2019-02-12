@@ -9,7 +9,7 @@
     "test:ci": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ci:checks": "npm run lint && npm run test:ci && npm run e2e"
+    "ci:checks": "npm ci && npm run lint && npm run test:ci && npm run e2e"
   },
   "private": true,
   "dependencies": {
