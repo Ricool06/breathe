@@ -38,9 +38,9 @@ resource "aws_s3_bucket" "state_bucket" {
 }
 
 output "BACKEND_BUCKET_NAME" {
-  value = "${aws_s3_bucket.state.bucket}"
+  value = "${aws_s3_bucket.state_bucket.bucket}"
 }
 
 output "BACKEND_TABLE_NAME" {
-  value = "${aws_dynamodb_table.locking.name}"
+  value = "${aws_dynamodb_table.state_lock_table.name}"
 }
