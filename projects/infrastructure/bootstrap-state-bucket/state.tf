@@ -44,3 +44,7 @@ output "BACKEND_BUCKET_NAME" {
 output "BACKEND_TABLE_NAME" {
   value = "${aws_dynamodb_table.state_lock_table.name}"
 }
+
+output "AWS_REGION" {
+  value = "${var.aws_region}"
+}
