@@ -14,10 +14,13 @@ resource "aws_s3_bucket" "web_ui" {
 resource "aws_s3_bucket_object" "web_ui" {
   bucket = "${local.web_ui_bucket_name}"
   key = "${local.web_ui_bucket_key}"
-  source = "../web_ui/${local.web_ui_bucket_key}"
+  source = "../web-ui/.serverless/${local.web_ui_bucket_key}"
 }
 
 resource "aws_lambda_function" "web_ui" {
+  depends_on = [
+    "aws_s3_bucket_object.web_ui"
+  ]
   function_name = "${local.project_name}-${terraform.workspace}-web-ui"
 
   s3_bucket = "${local.web_ui_bucket_name}"
