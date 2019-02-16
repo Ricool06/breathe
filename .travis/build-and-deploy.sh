@@ -1,4 +1,5 @@
 # Install requirements
+source ~/.nvm/nvm.sh
 nvm install node
 
 # Run builds
