@@ -1,1 +1,1 @@
-npm run build:serverless
+npm ci && npm run build:serverless
