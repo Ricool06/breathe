@@ -1,0 +1,12 @@
+{
+  "serverless": {
+    "provider": "aws",
+    "project": "web-ui",
+    "skipInstall": false,
+    "directory": ".",
+    "serverless": {
+      "aws": {},
+      "gcloud": {}
+    }
+  }
+}

@@ -6,8 +6,16 @@ matrix:
     cache: npm
     addons:
       chrome: stable
-  - stage: Deploy
-    script: echo DEPLOYING
+  - env: PROJECT=projects/infrastructure/
+    language: generic
+  - stage: Deploy production
+    language: generic
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script: bash projects/infrastructure/.travis/deploy.sh
+      on:
+        branch: master
 
 before_script: echo $TRAVIS_COMMIT_RANGE
 script: if .travis/project-has-new-commits.sh $TRAVIS_COMMIT_RANGE $PROJECT; then cd $PROJECT && ./.travis/ci.sh; else echo "NO CHANGES SINCE LAST COMMIT"; fi
