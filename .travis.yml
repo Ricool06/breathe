@@ -12,7 +12,6 @@ matrix:
     # End CI Checks, start deploy
   - stage: Deploy production
     language: generic
-    node_js: node
     deploy:
       provider: script
       skip_cleanup: true
