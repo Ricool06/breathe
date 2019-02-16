@@ -1,6 +1,7 @@
 matrix:
   include:
-  - env: PROJECT=projects/web-ui/
+  - stage: CI Checks
+    env: PROJECT=projects/web-ui/
     language: node_js
     node_js: node
     cache: npm
@@ -8,12 +9,13 @@ matrix:
       chrome: stable
   - env: PROJECT=projects/infrastructure/
     language: generic
+    # End CI Checks, start deploy
   - stage: Deploy production
     language: generic
     deploy:
       provider: script
       skip_cleanup: true
-      script: bash projects/infrastructure/.travis/deploy.sh
+      script: bash -e .travis/build-and-deploy.sh
       on:
         branch: master
 
