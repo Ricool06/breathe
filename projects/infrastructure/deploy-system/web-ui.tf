@@ -15,6 +15,7 @@ resource "aws_s3_bucket_object" "web_ui" {
   bucket = "${local.web_ui_bucket_name}"
   key = "${local.web_ui_bucket_key}"
   source = "../web-ui/.serverless/${local.web_ui_bucket_key}"
+  etag   = "${md5(file("../web-ui/.serverless/${local.web_ui_bucket_key}"))}"
 }
 
 resource "aws_lambda_function" "web_ui" {
