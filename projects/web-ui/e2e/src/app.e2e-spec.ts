@@ -11,6 +11,7 @@ describe('workspace-project App', () => {
   it('should display a map', async () => {
     await page.navigateTo();
     expect(page.getMapElement().isDisplayed()).toBeTruthy();
+    expect(page.getFirstMapTile().isDisplayed()).toBeTruthy();
   });
 
   afterEach(async () => {

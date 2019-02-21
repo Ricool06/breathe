@@ -8,4 +8,8 @@ export class MapPage {
   getMapElement() {
     return element(by.css('.leaflet-container'));
   }
+
+  getFirstMapTile() {
+    return element(by.css('img.leaflet-tile'));
+  }
 }
