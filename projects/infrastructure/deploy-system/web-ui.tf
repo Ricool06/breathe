@@ -1,6 +1,8 @@
 locals {
   web_ui_bucket_name = "${local.project_name}-${terraform.workspace}-web-ui"
   web_ui_bucket_key = "web-ui.zip"
+  web_ui_local_zip = "../web-ui/.serverless/${local.web_ui_bucket_key}"
+  web_ui_local_zip_hash = "${base64sha256(file("${local.web_ui_local_zip}"))}"
 }
 
 resource "aws_s3_bucket" "web_ui" {
@@ -14,8 +16,8 @@ resource "aws_s3_bucket" "web_ui" {
 resource "aws_s3_bucket_object" "web_ui" {
   bucket = "${local.web_ui_bucket_name}"
   key = "${local.web_ui_bucket_key}"
-  source = "../web-ui/.serverless/${local.web_ui_bucket_key}"
-  etag   = "${md5(file("../web-ui/.serverless/${local.web_ui_bucket_key}"))}"
+  source = "${local.web_ui_local_zip}"
+  etag   = "${md5(file("${local.web_ui_local_zip}"))}"
 }
 
 resource "aws_lambda_function" "web_ui" {
@@ -26,6 +28,7 @@ resource "aws_lambda_function" "web_ui" {
 
   s3_bucket = "${local.web_ui_bucket_name}"
   s3_key    = "${local.web_ui_bucket_key}"
+  source_code_hash = "${local.web_ui_local_zip_hash}"
 
   handler = "lambda.universal"
   runtime = "nodejs6.10"
