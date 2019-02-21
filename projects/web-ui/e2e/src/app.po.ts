@@ -1,11 +1,15 @@
 import { browser, by, element } from 'protractor';
 
-export class AppPage {
+export class MapPage {
   navigateTo() {
-    return browser.get(browser.baseUrl) as Promise<any>;
+    return browser.get(browser.baseUrl);
   }
 
-  getTitleText() {
-    return element(by.css('app-root h1')).getText() as Promise<string>;
+  getMapElement() {
+    return element(by.css('.leaflet-container'));
+  }
+
+  getFirstMapTile() {
+    return element(by.css('img.leaflet-tile'));
   }
 }

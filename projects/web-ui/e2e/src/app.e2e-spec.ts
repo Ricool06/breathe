@@ -1,16 +1,17 @@
-import { AppPage } from './app.po';
+import { MapPage } from './app.po';
 import { browser, logging } from 'protractor';
 
 describe('workspace-project App', () => {
-  let page: AppPage;
+  let page: MapPage;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new MapPage();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to web-ui!');
+  it('should display a map', async () => {
+    await page.navigateTo();
+    expect(page.getMapElement().isDisplayed()).toBeTruthy();
+    expect(page.getFirstMapTile().isDisplayed()).toBeTruthy();
   });
 
   afterEach(async () => {
