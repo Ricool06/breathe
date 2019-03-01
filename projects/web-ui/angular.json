@@ -9,6 +9,9 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {
+        "@ngrx/schematics:component": {
+          "style": "sass"
+        },
         "@schematics/angular:component": {
           "style": "sass"
         }
@@ -147,5 +150,8 @@
       }
     }
   },
-  "defaultProject": "web-ui"
+  "defaultProject": "web-ui",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

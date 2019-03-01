@@ -12,4 +12,8 @@ export class MapPage {
   getFirstMapTile() {
     return element(by.css('img.leaflet-tile'));
   }
+
+  getFirstMapPolygon() {
+    return element(by.css('path.leaflet-interactive'));
+  }
 }

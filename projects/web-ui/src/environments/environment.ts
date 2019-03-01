@@ -4,6 +4,11 @@
 
 export const environment = {
   production: false,
+  openaqApi: {
+    host: 'http://localhost',
+    port: 3000,
+    rootPath: '',
+  },
 };
 
 /*
