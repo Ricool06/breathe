@@ -6,6 +6,7 @@ import * as cors from 'cors';
 import * as dt from 'dredd-transactions';
 import { environment } from '../../src/environments/environment';
 import { Server } from 'http';
+import * as url from 'url';
 
 let transactionsMap: Map<string, any>;
 
@@ -35,7 +36,9 @@ describe('workspace-project App', () => {
     dt.compile(openaqBlueprint, openaqBlueprintFilePath, (error, result) => {
       expect(error).toBeFalsy();
       result.transactions
-        .map(transaction => transactionsMap.set(`${transaction.request.method} ${transaction.request.uri}`, transaction));
+        .map(transaction => transactionsMap.set(
+          generateTransactionMapKey(transaction.request.method, transaction.request.uri),
+          transaction));
     });
 
     page = new MapPage();
@@ -61,8 +64,12 @@ describe('workspace-project App', () => {
   });
 });
 
+function generateTransactionMapKey(method, uri) {
+  return `${method} ${url.parse(uri).pathname}`;
+}
+
 function matchRequestWithResponse(req: express.Request, res: express.Response) {
-  const { response } = transactionsMap.get(`${req.method} ${req.url}`);
+  const { response } = transactionsMap.get(generateTransactionMapKey(req.method, req.url));
 
   res.status(response.status).json(JSON.parse(response.body));
 }
