@@ -19,7 +19,7 @@ describe('workspace-project App', () => {
   beforeAll(() => {
     transactionsMap = new Map<string, any>();
 
-    openaqBlueprintFilePath = `${__dirname}/../assets/openaq.apib.md`;
+    openaqBlueprintFilePath = `${__dirname}/../../blueprints/openaq.apib.md`;
     openaqBlueprint = readFileSync(openaqBlueprintFilePath, 'utf8');
 
     const mockOpenaqApi = express();

@@ -9,7 +9,7 @@
     "test:ci": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ci:checks": "npm ci && npm run lint && npm run test:ci && npm run e2e",
+    "ci:checks": "npm ci && npm run blueprint2swagger && npm run lint && npm run test:ci && npm run e2e",
     "build:browser:prod": "ng build --prod",
     "build:browser:serverless": "ng build --prod --base-href /production/",
     "build:serverless": "npm run build:browser:serverless && npm run build:server:serverless && npm run package",
@@ -20,7 +20,8 @@
     "deploy": "serverless deploy",
     "package": "serverless package",
     "build:server:prod": "webpack --config webpack.server.config.js --progress --colors",
-    "build:server:serverless": "webpack --config webpack.server.config.js --progress --colors"
+    "build:server:serverless": "webpack --config webpack.server.config.js --progress --colors",
+    "blueprint2swagger": "apib2swagger -i blueprints/*.md -o blueprints/swagger.json"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +41,7 @@
     "cors": "~2.8.4",
     "cp-cli": "^1.1.0",
     "leaflet": "^1.4.0",
+    "moment": "^2.24.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
@@ -57,6 +59,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/leaflet": "^1.4.2",
     "@types/node": "~8.9.4",
+    "apib2swagger": "^1.8.0",
     "codelyzer": "~4.5.0",
     "dredd-transactions": "^6.5.2",
     "express": "^4.16.4",
