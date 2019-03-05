@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 export interface Measurement {
     parameter: string;
     value: number;
-    lastUpdated: Moment;
+    lastUpdated: Moment | string;
     unit: string;
     sourceName: string;
     averagingPeriod: {
@@ -12,7 +12,7 @@ export interface Measurement {
     };
 }
 
-export interface Result {
+export interface LocationResult {
     location: string;
     city: string;
     country: string;

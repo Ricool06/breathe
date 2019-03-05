@@ -3,7 +3,7 @@ import { LatLng } from 'leaflet';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Result } from '../model';
+import { LocationResult } from '../model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { Result } from '../model';
 export class LatestMeasurementsService {
   constructor(private httpClient: HttpClient) { }
 
-  getInRadius(coordinates: LatLng, radiusInMetres: number): Observable<Result[]> {
+  getInRadius(coordinates: LatLng, radiusInMetres: number): Observable<LocationResult[]> {
     return this.httpClient.get('/latest', {
       params: {
         coordinates: `${coordinates.lat},${coordinates.lng}`,

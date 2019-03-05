@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { LatLng } from 'leaflet';
 import { LatestMeasurementsService } from './latest-measurements.service';
 import { HttpRequest } from '@angular/common/http';
-import { Result } from '../model';
+import { LocationResult } from '../model';
 const swagger = require('../../../blueprints/swagger.json');
 
 describe('LatestMeasurementsService', () => {
@@ -30,10 +30,10 @@ describe('LatestMeasurementsService', () => {
     inject([LatestMeasurementsService], (service: LatestMeasurementsService) => {
       const coordinates = new LatLng(39.2133, 117.1837);
       const radius = 2500;
-      const goodResponse: { results: Result[] } =
+      const goodResponse: { results: LocationResult[] } =
         swagger.paths['/latest'].get.responses['200'].examples['application/json'];
 
-      service.getInRadius(coordinates, radius).subscribe((results: any) => {
+      service.getInRadius(coordinates, radius).subscribe((results: LocationResult[]) => {
         expect(results).toEqual(goodResponse.results);
       });
 
