@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { LocationResult } from '../model';
 import { LatestLocationResultActionTypes, LatestLocationResultActions } from '../actions/latest-location-result.actions';
 

@@ -22,4 +22,4 @@ export const selectLocationResults = createSelector(
   (state: fromLocationResult.State) => state.locationResults
 );
 
-// export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
+export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

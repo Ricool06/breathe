@@ -15,14 +15,14 @@ describe('LocationResult Reducer', () => {
 
   describe('LoadLatestLocationResultsSuccess action', () => {
     it('should set location results', () => {
-      const mockLocationResults =
+      const locationResults =
         swagger.paths['/latest'].get.responses[200].examples['application/json'].results;
 
-      const action = new LoadLatestLocationResultsSuccess({ locationResults: mockLocationResults });
+      const action = new LoadLatestLocationResultsSuccess({ locationResults });
 
       const newState = reducer(initialState, action);
 
-      expect(newState.locationResults).toBe(mockLocationResults);
+      expect(newState.locationResults).toBe(locationResults);
     });
   });
 });

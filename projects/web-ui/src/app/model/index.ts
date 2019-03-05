@@ -1,15 +1,22 @@
 import { Moment } from 'moment';
 
+export interface AveragingPeriod {
+    value: number;
+    unit: string;
+}
+
 export interface Measurement {
     parameter: string;
     value: number;
     lastUpdated: Moment | string;
     unit: string;
     sourceName: string;
-    averagingPeriod: {
-        value: number;
-        unit: string;
-    };
+    averagingPeriod: AveragingPeriod;
+}
+
+export interface Coordinates {
+    latitude: number;
+    longitude: number;
 }
 
 export interface LocationResult {
@@ -18,8 +25,5 @@ export interface LocationResult {
     country: string;
     distance: number;
     measurements: Measurement[];
-    coordinates: {
-        latitude: number;
-        longitude: number;
-    };
+    coordinates: Coordinates;
 }
