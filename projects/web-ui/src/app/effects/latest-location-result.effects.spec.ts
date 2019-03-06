@@ -15,7 +15,7 @@ import {
   LoadLatestLocationResultsFailure
 } from '../actions/latest-location-result.actions';
 
-fdescribe('LatestLocationResultEffects', () => {
+describe('LatestLocationResultEffects', () => {
   let actions$: Observable<LatestLocationResultActions>;
   let effects: LatestLocationResultEffects;
   let latestMeasurementsService: jasmine.SpyObj<LatestMeasurementsService>;
