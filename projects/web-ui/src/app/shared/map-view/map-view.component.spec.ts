@@ -10,11 +10,17 @@ import * as L from 'leaflet';
   selector: 'app-mock-parent',
   template: `<app-map-view
   [locationResults]="locationResults"
+  (mapBounds)="onMapBoundsChange($event)"
   ></app-map-view>`,
 })
 class MockParentComponent {
   @ViewChild(MapViewComponent) childComponent: MapViewComponent;
   locationResults: LocationResult[];
+  mapBounds: L.LatLngBounds;
+
+  onMapBoundsChange(newMapBounds: L.LatLngBounds) {
+    this.mapBounds = newMapBounds;
+  }
 }
 
 describe('MapViewComponent', () => {
@@ -61,12 +67,31 @@ describe('MapViewComponent', () => {
     expect(aTile).toBeTruthy();
   });
 
+  it('should emit event from mapBounds at startup', async () => {
+    await fixture.whenStable();
+    expect(parentComponent.mapBounds).toBeDefined();
+  });
+
+  it('should emit event from mapBounds when map bounds change', (done) => {
+    spyOn(parentComponent, 'onMapBoundsChange');
+    const mockBounds = new L.LatLngBounds([52, 45], [1, 1]);
+
+    fixture.whenStable().then(() => {
+      leafletMap.flyToBounds(mockBounds);
+      leafletMap.on('moveend', () => {
+        fixture.detectChanges();
+        expect(parentComponent.onMapBoundsChange).toHaveBeenCalledWith(jasmine.any(L.LatLngBounds));
+        done();
+      });
+    });
+  });
+
   it('should add circles at each location result idempotently', async () => {
     const locationResults: LocationResult[] =
       swagger.paths['/latest'].get.responses[200].examples['application/json'].results;
 
     const originalCircleFunc = L.circle;
-    let circles: L.Circle[] = [];
+    const circles: L.Circle[] = [];
 
     spyOn(L, 'circle').and.callFake((...args) => {
       const circle = originalCircleFunc(args[0], args[1]);

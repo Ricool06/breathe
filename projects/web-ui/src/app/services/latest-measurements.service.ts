@@ -17,6 +17,7 @@ export class LatestMeasurementsService {
         coordinates: `${coordinates.lat},${coordinates.lng}`,
         radius: radiusInMetres.toString(),
         has_geo: 'true',
+        limit: '10000',
       },
     }).pipe(
       map((data: any) => data.results)

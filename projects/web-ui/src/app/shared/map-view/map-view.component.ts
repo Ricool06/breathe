@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import * as L from 'leaflet';
 import { LocationResult, Coordinates } from 'src/app/model';
 import { from } from 'rxjs';
@@ -13,17 +13,23 @@ export class MapViewComponent implements OnInit, OnChanges {
   @Input()
   public locationResults: LocationResult[];
 
+  @Output()
+  public mapBounds = new EventEmitter<L.LatLngBounds>();
+
   private leafletMap: L.Map;
   private circles: L.Circle[] = [];
 
   constructor() { }
 
   ngOnInit() {
-    this.leafletMap = L.map('map').setView([51.505, -0.09], 13);
+    this.leafletMap = L.map('map').setView([39.2133, 117.1837], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.leafletMap);
+
+    this.leafletMap.on('moveend', () => this.mapBounds.emit(this.leafletMap.getBounds()));
+    this.mapBounds.emit(this.leafletMap.getBounds());
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,7 +56,12 @@ export class MapViewComponent implements OnInit, OnChanges {
 
   private addCircleForLocationResult(locationResult: LocationResult) {
     const resultLatLng = this.convertCoordinatesToLatLng(locationResult.coordinates);
-    const newCircle = L.circle(resultLatLng);
+    const newCircle = L.circle(resultLatLng, {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.5,
+      radius: 500,
+  });
 
     this.circles.push(newCircle.addTo(this.leafletMap));
   }

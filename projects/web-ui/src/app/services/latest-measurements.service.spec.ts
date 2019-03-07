@@ -30,6 +30,7 @@ describe('LatestMeasurementsService', () => {
     inject([LatestMeasurementsService], (service: LatestMeasurementsService) => {
       const coordinates = new LatLng(39.2133, 117.1837);
       const radius = 2500;
+      const limit = 10000;
       const goodResponse: { results: LocationResult[] } =
         swagger.paths['/latest'].get.responses['200'].examples['application/json'];
 
@@ -42,6 +43,7 @@ describe('LatestMeasurementsService', () => {
       expect(testRequest.request.params.get('coordinates')).toEqual(`${coordinates.lat},${coordinates.lng}`);
       expect(testRequest.request.params.get('has_geo')).toEqual('true');
       expect(testRequest.request.params.get('radius')).toEqual(radius.toString());
+      expect(testRequest.request.params.get('limit')).toEqual(limit.toString());
 
       testRequest.flush(goodResponse);
 
