@@ -9,6 +9,9 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {
+        "@ngrx/schematics:component": {
+          "style": "sass"
+        },
         "@schematics/angular:component": {
           "style": "sass"
         }
@@ -112,7 +115,8 @@
               "src/tsconfig.spec.json"
             ],
             "exclude": [
-              "**/node_modules/**"
+              "**/node_modules/**",
+              "**/blueprints/**"
             ]
           }
         }
@@ -147,5 +151,8 @@
       }
     }
   },
-  "defaultProject": "web-ui"
+  "defaultProject": "web-ui",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
