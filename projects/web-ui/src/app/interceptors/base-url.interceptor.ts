@@ -6,8 +6,7 @@ import { environment } from 'src/environments/environment';
 export class BaseUrlInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     const { host, port, rootPath } = environment.openaqApi;
-    const url = `${host}:${port}${rootPath}${req.urlWithParams}`;
-    console.log(url);
+    const url = `${host}:${port}${rootPath}${req.url}`;
     const newReq = req.clone({ url });
     return next.handle(newReq);
   }
