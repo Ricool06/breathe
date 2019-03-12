@@ -8,7 +8,7 @@ import {
   LatestLocationResultActions,
   LoadLatestLocationResultsFailure
 } from '../actions/latest-location-result.actions';
-import { map, switchMap, tap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { LatestMeasurementsService } from '../services/latest-measurements.service';
 
 @Injectable()
