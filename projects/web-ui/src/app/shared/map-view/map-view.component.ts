@@ -16,10 +16,15 @@ export class MapViewComponent implements OnInit, OnChanges {
   @Output()
   public mapBounds = new EventEmitter<L.LatLngBounds>();
 
-  private leafletMap: L.Map;
-  private circles: L.Circle[] = [];
+  @Output()
+  public clickedLocationResult = new EventEmitter<LocationResult>();
 
-  constructor() { }
+  private leafletMap: L.Map;
+  private circles: Map<L.Circle, LocationResult>;
+
+  constructor() {
+    this.circles = new Map();
+  }
 
   ngOnInit() {
     this.leafletMap = L.map('map').setView([39.2133, 117.1837], 13);
@@ -40,13 +45,14 @@ export class MapViewComponent implements OnInit, OnChanges {
   private createNewCircles(currentLocationResults: LocationResult[]) {
     from(currentLocationResults).pipe(
       distinct(result => `${result.coordinates.latitude},${result.coordinates.longitude}`),
-      filter(result => this.circles.length === 0 || !this.alreadyHasCircle(result)),
+      filter(result => this.circles.size === 0 || !this.alreadyHasCircle(result)),
       takeWhile(result => result !== currentLocationResults[currentLocationResults.length])
     ).subscribe(result => this.addCircleForLocationResult(result));
   }
 
   private alreadyHasCircle(locationResult: LocationResult): boolean {
-    return this.circles.some(circle => this.isAtCircle(locationResult, circle));
+    return Array.from(this.circles.keys())
+      .some(circle => this.isAtCircle(locationResult, circle));
   }
 
   private isAtCircle(locationResult: LocationResult, circle: L.Circle): boolean {
@@ -61,13 +67,20 @@ export class MapViewComponent implements OnInit, OnChanges {
       fillColor: '#f03',
       fillOpacity: 0.5,
       radius: 500,
-  });
+    });
 
-    this.circles.push(newCircle.addTo(this.leafletMap));
+    newCircle.on('click', this.onCircleClick.bind(this));
+
+    newCircle.addTo(this.leafletMap);
+    this.circles.set(newCircle, locationResult);
   }
 
   private convertCoordinatesToLatLng(coordinates: Coordinates): L.LatLng {
     const { latitude, longitude } = coordinates;
     return new L.LatLng(latitude, longitude);
+  }
+
+  private onCircleClick(event: L.LeafletEvent) {
+    this.clickedLocationResult.emit(this.circles.get(event.target));
   }
 }

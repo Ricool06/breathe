@@ -58,7 +58,6 @@ describe('workspace-project App', () => {
   describe('circles', () => {
     it('should display a sheet with location & air quality data when clicked', async () => {
       await page.clickACircle();
-
       expect(page.getBottomSheet().isDisplayed()).toBe(true);
     });
   });
