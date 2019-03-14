@@ -1,7 +1,6 @@
 import { State, selectLocationResults } from '.';
 import { LocationResult } from '../model';
 import * as swagger from '../../../blueprints/swagger.json';
-import { Moment, MomentCreationData } from 'moment';
 
 describe('Root state', () => {
   describe('LocationResults selector', () => {

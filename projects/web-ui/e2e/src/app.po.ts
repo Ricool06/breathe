@@ -13,7 +13,19 @@ export class MapPage {
     return element(by.css('img.leaflet-tile'));
   }
 
-  getFirstMapPolygon() {
+  getFirstMapCircle() {
     return element(by.css('path.leaflet-interactive'));
+  }
+
+  getBottomSheet() {
+    return element(by.css('mat-bottom-sheet-container'));
+  }
+
+  getSingleResultChart() {
+    return element(by.css('mat-bottom-sheet-container app-single-result-chart canvas'));
+  }
+
+  clickACircle() {
+    return this.getFirstMapCircle().click();
   }
 }

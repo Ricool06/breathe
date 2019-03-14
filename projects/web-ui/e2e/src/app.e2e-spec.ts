@@ -50,9 +50,28 @@ describe('workspace-project App', () => {
     expect(page.getFirstMapTile().isDisplayed()).toBeTruthy();
   });
 
-  it('should display polygons on map when API returns good data', async () => {
+  it('should display circles on map when API returns good data', async () => {
     await page.navigateTo();
-    expect(page.getFirstMapPolygon().isDisplayed()).toBeTruthy();
+    expect(page.getFirstMapCircle().isDisplayed()).toBeTruthy();
+  });
+
+  describe('circles', () => {
+    it('should display a sheet with location & air quality data when clicked', async () => {
+      await page.clickACircle();
+      expect(page.getBottomSheet().isDisplayed()).toBe(true);
+    });
+  });
+
+  describe('location result data sheet', () => {
+    beforeEach(async () => {
+      await page.navigateTo();
+      await page.clickACircle();
+      expect(page.getBottomSheet().isDisplayed()).toBe(true);
+    });
+
+    it('should display a location result measurements chart', () => {
+      expect(page.getSingleResultChart().isDisplayed()).toBe(true);
+    });
   });
 
   afterEach(async () => {

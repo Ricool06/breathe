@@ -1,4 +1,5 @@
 <app-map-view
 [locationResults]="(locationResults$ | async)"
 (mapBounds)="onMapBoundsChange($event)"
+(clickedLocationResult)="onLocationResultClicked($event)"
 ></app-map-view>

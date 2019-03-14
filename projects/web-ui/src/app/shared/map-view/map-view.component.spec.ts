@@ -11,15 +11,21 @@ import * as L from 'leaflet';
   template: `<app-map-view
   [locationResults]="locationResults"
   (mapBounds)="onMapBoundsChange($event)"
+  (clickedLocationResult)="onCircleClick($event)"
   ></app-map-view>`,
 })
 class MockParentComponent {
   @ViewChild(MapViewComponent) childComponent: MapViewComponent;
   locationResults: LocationResult[];
   mapBounds: L.LatLngBounds;
+  clickedLocationResult: LocationResult;
 
   onMapBoundsChange(newMapBounds: L.LatLngBounds) {
     this.mapBounds = newMapBounds;
+  }
+
+  onCircleClick(clickedLocationResult: LocationResult) {
+    this.clickedLocationResult = clickedLocationResult;
   }
 }
 
@@ -122,5 +128,27 @@ describe('MapViewComponent', () => {
 
     expect(circles.length).toBe(parentComponent.locationResults.length);
     circles.map(c => expect(c.addTo).toHaveBeenCalledWith(leafletMap));
+  });
+
+  it('should emit the location result for a clicked circle', async () => {
+    const locationResults: LocationResult[] =
+      swagger.paths['/latest'].get.responses[200].examples['application/json'].results;
+
+    const originalCircleFunc = L.circle;
+    let circle: L.Circle;
+
+    spyOn(L, 'circle').and.callFake((...args) => {
+      circle = originalCircleFunc(args[0], args[1]);
+      return circle;
+    });
+
+    parentComponent.locationResults = locationResults;
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    circle.fire('click');
+
+    expect(parentComponent.clickedLocationResult).toBe(locationResults[0]);
   });
 });
