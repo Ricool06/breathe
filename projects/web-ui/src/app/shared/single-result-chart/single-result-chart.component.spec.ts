@@ -36,7 +36,9 @@ describe('SingleResultChartComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [MockParentComponent, SingleResultChartComponent],
-      providers: [{ provide: StaticChartFactoryService, useValue: mockStaticChartFactory }],
+      providers: [
+        { provide: StaticChartFactoryService, useValue: mockStaticChartFactory },
+      ],
     })
     .compileComponents();
   }));
@@ -69,10 +71,41 @@ describe('SingleResultChartComponent', () => {
 
     fixture.detectChanges();
 
-    const labels = mockMeasurements.map(measurement => `${measurement.parameter}: ${measurement.unit}`);
+    const labels = mockMeasurements.map(({ parameter, unit }) => `${parameter} ${unit}`);
     const data = mockMeasurements.map(measurement => measurement.value);
 
     expect(chart.data.labels).toEqual(labels);
     expect(chart.data.datasets[0].data).toEqual(data);
+  });
+
+  it('should set the colours of the measurement parameters uniquely', () => {
+    parentComponent.measurements = mockMeasurements;
+
+    fixture.detectChanges();
+
+    (chart.data.datasets[0].backgroundColor as string[]).forEach((colour, index, colours) => {
+      expect(colours.lastIndexOf(colour)).toBe(index, 'Not all colours are unique');
+    });
+  });
+
+  it('should sort measurements by parameter', () => {
+    mockMeasurements[0].parameter = 'B';
+    mockMeasurements[1].parameter = 'C';
+    mockMeasurements[2] = {
+      ...mockMeasurements[0],
+      parameter: 'A',
+      value: 256000,
+    };
+
+    parentComponent.measurements = [...mockMeasurements];
+
+    const sortedMeasurements = mockMeasurements.sort(({ parameter: p1 }, { parameter: p2 }) => p1.localeCompare(p2));
+    const sortedLabels = sortedMeasurements.map(({ parameter, unit }) => `${parameter} ${unit}`);
+    const sortedValues = sortedMeasurements.map(({ value }) => value);
+
+    fixture.detectChanges();
+
+    expect(chart.data.labels).toEqual(sortedLabels);
+    expect(chart.data.datasets[0].data).toEqual(sortedValues);
   });
 });

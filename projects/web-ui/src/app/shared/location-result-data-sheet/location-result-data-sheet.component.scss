@@ -1,3 +1,10 @@
 app-single-result-chart {
   display: block;
+  height: 100%;
+  width: 100%;
+}
+
+mat-card {
+  width: calc(100% - 70px);
+  height: calc(100% - 70px);
 }
