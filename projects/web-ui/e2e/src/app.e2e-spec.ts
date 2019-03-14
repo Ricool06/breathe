@@ -62,6 +62,18 @@ describe('workspace-project App', () => {
     });
   });
 
+  describe('location result data sheet', () => {
+    beforeEach(async () => {
+      await page.navigateTo();
+      await page.clickACircle();
+      expect(page.getBottomSheet().isDisplayed()).toBe(true);
+    });
+
+    it('should display a location result measurements chart', () => {
+      expect(page.getSingleResultChart().isDisplayed()).toBe(true);
+    });
+  });
+
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser
     const logs = await browser.manage().logs().get(logging.Type.BROWSER);
