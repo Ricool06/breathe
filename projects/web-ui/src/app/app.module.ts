@@ -14,6 +14,7 @@ import { BaseUrlInterceptor } from './interceptors/base-url.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocationResultDataSheetComponent } from './shared/location-result-data-sheet/location-result-data-sheet.component';
 import { SingleResultChartComponent } from './shared/single-result-chart/single-result-chart.component';
+import { MatGridListModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SingleResultChartComponent } from './shared/single-result-chart/single-
     HttpClientModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,
+    MatGridListModule,
   ],
   providers: [
     {

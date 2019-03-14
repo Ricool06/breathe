@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
-import { Chart, ChartData } from 'chart.js';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, AfterViewInit, HostListener } from '@angular/core';
+import { Chart, ChartData, ChartDataSets } from 'chart.js';
 import { StaticChartFactoryService } from 'src/app/services/static-chart-factory.service';
 import { Measurement } from 'src/app/model';
+import * as Color from 'color';
 
 @Component({
   selector: 'app-single-result-chart',
@@ -24,6 +25,7 @@ export class SingleResultChartComponent implements OnInit, AfterViewInit, OnChan
       {
         data: this.convertMeasurementsToChartData(this.measurements),
         type: 'polarArea',
+        options: { maintainAspectRatio: false },
       }
     );
   }
@@ -39,11 +41,17 @@ export class SingleResultChartComponent implements OnInit, AfterViewInit, OnChan
   }
 
   private convertMeasurementsToChartData(measurements: Measurement[]): ChartData {
-    measurements = measurements || [];
+    measurements = (measurements || []).sort(({ parameter: p1 }, { parameter: p2 }) => p1.localeCompare(p2));
 
-    const labels = measurements.map(measurement => `${measurement.parameter}: ${measurement.unit}`);
+    const labels = measurements.map(measurement => `${measurement.parameter} ${measurement.unit}`);
     const data = measurements.map(measurement => measurement.value);
+    const backgroundColor = measurements.map((_, index) => {
+      return new Color([40, 190, 255, 0.6], 'rgb')
+        .rotate(-index * 45)
+        .lighten(0.2)
+        .rgb().string();
+    });
 
-    return { labels, datasets: [{ data }] };
+    return { labels, datasets: [{ data, backgroundColor }] };
   }
 }

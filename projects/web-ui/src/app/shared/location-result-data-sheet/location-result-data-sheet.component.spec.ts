@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LocationResultDataSheetComponent } from './location-result-data-sheet.component';
 import * as swagger from '../../../../blueprints/swagger.json';
-import { MAT_BOTTOM_SHEET_DATA } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatGridListModule } from '@angular/material';
 import { LocationResult, Measurement } from 'src/app/model';
 import { Component, Input } from '@angular/core';
 import { SingleResultChartComponent } from '../single-result-chart/single-result-chart.component';
@@ -27,6 +27,7 @@ describe('LocationResultDataSheetComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [LocationResultDataSheetComponent, MockSingleResultChartComponent],
+      imports: [MatGridListModule],
       providers: [
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: locationResult },
         { provide: SingleResultChartComponent, useClass: MockSingleResultChartComponent },
