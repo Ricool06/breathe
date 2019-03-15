@@ -8,7 +8,7 @@ import { environment } from '../../src/environments/environment';
 import { Server } from 'http';
 import * as url from 'url';
 import { LocationResult } from 'src/app/model';
-import moment = require('moment');
+import * as moment from 'moment';
 
 let transactionsMap: Map<string, any>;
 
