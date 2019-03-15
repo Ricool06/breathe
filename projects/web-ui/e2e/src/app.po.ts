@@ -25,6 +25,10 @@ export class MapPage {
     return element(by.css('mat-bottom-sheet-container app-single-result-chart canvas'));
   }
 
+  getSingleResultTime() {
+    return element(by.css('mat-bottom-sheet-container subheading-1'));
+  }
+
   clickACircle() {
     return this.getFirstMapCircle().click();
   }

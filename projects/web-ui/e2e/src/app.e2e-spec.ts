@@ -7,6 +7,8 @@ import * as dt from 'dredd-transactions';
 import { environment } from '../../src/environments/environment';
 import { Server } from 'http';
 import * as url from 'url';
+import { LocationResult } from 'src/app/model';
+import moment = require('moment');
 
 let transactionsMap: Map<string, any>;
 
@@ -71,6 +73,20 @@ describe('workspace-project App', () => {
 
     it('should display a location result measurements chart', () => {
       expect(page.getSingleResultChart().isDisplayed()).toBe(true);
+    });
+  });
+
+  describe(' location result data sheet data', () => {
+    it('should display the latest location result measurement time', async () => {
+      const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
+      const results: LocationResult[] = JSON.parse(transaction.response.body).results;
+      results.map(result => result.measurements.map(measurement => measurement.lastUpdated = moment().subtract(1, 'hour')));
+
+      await page.navigateTo();
+      await page.clickACircle();
+
+      expect(page.getBottomSheet().isDisplayed()).toBe(true);
+      expect(page.getSingleResultTime().getText()).toEqual('Latest measurement: 1 hour ago');
     });
   });
 
