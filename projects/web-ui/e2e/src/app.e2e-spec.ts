@@ -86,7 +86,7 @@ describe('workspace-project App', () => {
       await page.clickACircle();
 
       expect(page.getBottomSheet().isDisplayed()).toBe(true);
-      expect(page.getSingleResultTime().getText()).toEqual('Latest measurement: 1 hour ago');
+      expect(page.getSingleResultTime().getText()).toEqual('Latest measurement: an hour ago');
     });
   });
 

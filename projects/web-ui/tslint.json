@@ -1,5 +1,8 @@
 {
-  "extends": "tslint:recommended",
+  "extends": [
+    "tslint:recommended",
+    "tslint-defocus"
+  ],
   "rulesDirectory": [
     "codelyzer"
   ],
@@ -9,6 +12,7 @@
     "deprecation": {
       "severity": "warn"
     },
+    "defocus": true,
     "import-blacklist": [
       true,
       "rxjs/Rx"

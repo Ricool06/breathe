@@ -15,12 +15,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocationResultDataSheetComponent } from './shared/location-result-data-sheet/location-result-data-sheet.component';
 import { SingleResultChartComponent } from './shared/single-result-chart/single-result-chart.component';
 import { MatGridListModule } from '@angular/material';
+import { HumanizeDatePipe } from './pipes/humanize-date.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LocationResultDataSheetComponent,
     SingleResultChartComponent,
+    HumanizeDatePipe,
   ],
   entryComponents: [
     LocationResultDataSheetComponent,
