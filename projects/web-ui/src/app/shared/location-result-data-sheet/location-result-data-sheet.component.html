@@ -1,6 +1,9 @@
 <mat-grid-list cols="4" rowHeight="100px">
   <mat-grid-tile [colspan]="4" [rowspan]="1">
-    <h1>{{ locationResult.city }}, {{ locationResult.country }}</h1>
+    <div id="header">
+      <h1 class="mat-h1">{{ locationResult.city }}, {{ locationResult.country }}</h1>
+      <h4 class="mat-h4">Latest measurement: {{ locationResult.measurements[0].lastUpdated | humanizeDate }}</h4>
+    </div>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="4" [rowspan]="4">
     <app-single-result-chart

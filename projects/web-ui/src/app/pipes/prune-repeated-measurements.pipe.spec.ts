@@ -1,6 +1,7 @@
 import { PruneRepeatedMeasurementsPipe } from './prune-repeated-measurements.pipe';
 import * as swagger from 'blueprints/swagger.json';
 import { Measurement } from '../model';
+import { cloneDeep } from 'lodash';
 
 describe('PruneRepeatedMeasurementsPipe', () => {
   it('can create an instance', () => {
@@ -12,7 +13,7 @@ describe('PruneRepeatedMeasurementsPipe', () => {
     const pipe = new PruneRepeatedMeasurementsPipe();
 
     const measurements: Measurement[] =
-      swagger.paths['/latest'].get.responses[200].examples['application/json'].results[0].measurements;
+      cloneDeep(swagger.paths['/latest'].get.responses[200].examples['application/json'].results[0].measurements);
 
     const originalLength = measurements.length;
 

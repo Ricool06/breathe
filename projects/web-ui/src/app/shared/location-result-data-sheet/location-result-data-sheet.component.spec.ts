@@ -10,6 +10,8 @@ import { By } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { PruneNonLatestMeasurementsPipe } from 'src/app/pipes/prune-non-latest-measurements.pipe';
 import { PruneRepeatedMeasurementsPipe } from 'src/app/pipes/prune-repeated-measurements.pipe';
+import { cloneDeep } from 'lodash';
+import { HumanizeDatePipe } from 'src/app/pipes/humanize-date.pipe';
 
 @Component({
   selector: 'app-single-result-chart',
@@ -33,8 +35,7 @@ describe('LocationResultDataSheetComponent', () => {
   };
 
   beforeEach(async(() => {
-    locationResult =
-      swagger.paths['/latest'].get.responses[200].examples['application/json'].results[0];
+    locationResult = cloneDeep(swagger.paths['/latest'].get.responses[200].examples['application/json'].results[0]);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -42,6 +43,7 @@ describe('LocationResultDataSheetComponent', () => {
         MockSingleResultChartComponent,
         PruneNonLatestMeasurementsPipe,
         PruneRepeatedMeasurementsPipe,
+        HumanizeDatePipe,
       ],
       imports: [MatGridListModule],
       providers: [
@@ -66,20 +68,31 @@ describe('LocationResultDataSheetComponent', () => {
     expect(dataSheetHeader.textContent).toBe(`${city}, ${country}`);
   });
 
+  it('should show humanized time from location result', () => {
+    const nowString = moment().subtract(1, 'hour').toISOString();
+    locationResult.measurements.forEach(measurement => measurement.lastUpdated = nowString);
+
+    createSheetWithData(locationResult);
+
+    const dataSheetHeader = fixture.nativeElement.querySelector('h4');
+    expect(dataSheetHeader.textContent).toBe(`Latest measurement: an hour ago`);
+  });
+
   it('should push measurements to the single result chart', () => {
     createSheetWithData(locationResult);
 
     const mockChart: MockSingleResultChartComponent =
       fixture.debugElement.query(By.directive(MockSingleResultChartComponent)).componentInstance;
     const { measurements } = locationResult;
+
     expect(mockChart.measurements).toEqual(measurements);
   });
 
   it('should only push the latest, unique measurements ot the single result chart', () => {
-    const { measurements } = locationResult;
-    const clonedMeasurement: Measurement = { ...measurements[0] };
+    const measurements = cloneDeep(locationResult.measurements);
+    const clonedMeasurement: Measurement = cloneDeep(measurements[0]);
     const oldMeasurement: Measurement = {
-      ...measurements[0],
+      ...clonedMeasurement,
       lastUpdated: moment(measurements[0].lastUpdated).subtract(1, 'hour').toISOString(),
     };
 
