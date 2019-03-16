@@ -7,6 +7,9 @@ import { LocationResult, Measurement } from 'src/app/model';
 import { Component, Input } from '@angular/core';
 import { SingleResultChartComponent } from '../single-result-chart/single-result-chart.component';
 import { By } from '@angular/platform-browser';
+import * as moment from 'moment';
+import { PruneNonLatestMeasurementsPipe } from 'src/app/pipes/prune-non-latest-measurements.pipe';
+import { PruneRepeatedMeasurementsPipe } from 'src/app/pipes/prune-repeated-measurements.pipe';
 
 @Component({
   selector: 'app-single-result-chart',
@@ -21,12 +24,25 @@ describe('LocationResultDataSheetComponent', () => {
   let fixture: ComponentFixture<LocationResultDataSheetComponent>;
   let locationResult: LocationResult;
 
+  const createSheetWithData = (overridenLocationResult: LocationResult) => {
+    TestBed.overrideProvider(MAT_BOTTOM_SHEET_DATA, { useValue: overridenLocationResult });
+
+    fixture = TestBed.createComponent(LocationResultDataSheetComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  };
+
   beforeEach(async(() => {
     locationResult =
       swagger.paths['/latest'].get.responses[200].examples['application/json'].results[0];
 
     TestBed.configureTestingModule({
-      declarations: [LocationResultDataSheetComponent, MockSingleResultChartComponent],
+      declarations: [
+        LocationResultDataSheetComponent,
+        MockSingleResultChartComponent,
+        PruneNonLatestMeasurementsPipe,
+        PruneRepeatedMeasurementsPipe,
+      ],
       imports: [MatGridListModule],
       providers: [
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: locationResult },
@@ -36,26 +52,45 @@ describe('LocationResultDataSheetComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LocationResultDataSheetComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   it('should create', () => {
+    createSheetWithData(locationResult);
+
     expect(component).toBeTruthy();
   });
 
   it('should display city & country from a location result', () => {
+    createSheetWithData(locationResult);
+
     const dataSheetHeader = fixture.nativeElement.querySelector('h1');
     const { city, country } = locationResult;
     expect(dataSheetHeader.textContent).toBe(`${city}, ${country}`);
   });
 
   it('should push measurements to the single result chart', () => {
+    createSheetWithData(locationResult);
+
     const mockChart: MockSingleResultChartComponent =
       fixture.debugElement.query(By.directive(MockSingleResultChartComponent)).componentInstance;
     const { measurements } = locationResult;
+    expect(mockChart.measurements).toEqual(measurements);
+  });
+
+  it('should only push the latest, unique measurements ot the single result chart', () => {
+    const { measurements } = locationResult;
+    const clonedMeasurement: Measurement = { ...measurements[0] };
+    const oldMeasurement: Measurement = {
+      ...measurements[0],
+      lastUpdated: moment(measurements[0].lastUpdated).subtract(1, 'hour').toISOString(),
+    };
+
+    const messyMeasurements = [...measurements, clonedMeasurement, oldMeasurement];
+    const messyLocationResult = { ...locationResult, measurements: messyMeasurements };
+
+    createSheetWithData(messyLocationResult);
+
+    const mockChart: MockSingleResultChartComponent =
+      fixture.debugElement.query(By.directive(MockSingleResultChartComponent)).componentInstance;
+
     expect(mockChart.measurements).toEqual(measurements);
   });
 });
