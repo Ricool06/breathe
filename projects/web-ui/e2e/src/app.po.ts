@@ -26,7 +26,7 @@ export class MapPage {
   }
 
   getSingleResultTime() {
-    return element(by.css('mat-bottom-sheet-container subheading-1'));
+    return element(by.css('mat-bottom-sheet-container h4'));
   }
 
   clickACircle() {

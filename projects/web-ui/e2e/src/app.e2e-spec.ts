@@ -76,11 +76,13 @@ describe('workspace-project App', () => {
     });
   });
 
-  describe(' location result data sheet data', () => {
+  describe('location result data sheet data', () => {
     it('should display the latest location result measurement time', async () => {
       const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
-      const results: LocationResult[] = JSON.parse(transaction.response.body).results;
+      const body = JSON.parse(transaction.response.body);
+      const results: LocationResult[] = body.results;
       results.map(result => result.measurements.map(measurement => measurement.lastUpdated = moment().subtract(1, 'hour')));
+      transaction.response.body = JSON.stringify(body);
 
       await page.navigateTo();
       await page.clickACircle();
