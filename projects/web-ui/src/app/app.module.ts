@@ -16,6 +16,8 @@ import { LocationResultDataSheetComponent } from './shared/location-result-data-
 import { SingleResultChartComponent } from './shared/single-result-chart/single-result-chart.component';
 import { MatGridListModule } from '@angular/material';
 import { HumanizeDatePipe } from './pipes/humanize-date.pipe';
+import { PruneRepeatedMeasurementsPipe } from './pipes/prune-repeated-measurements.pipe';
+import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measurements.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { HumanizeDatePipe } from './pipes/humanize-date.pipe';
     LocationResultDataSheetComponent,
     SingleResultChartComponent,
     HumanizeDatePipe,
+    PruneRepeatedMeasurementsPipe,
+    PruneNonLatestMeasurementsPipe,
   ],
   entryComponents: [
     LocationResultDataSheetComponent,
