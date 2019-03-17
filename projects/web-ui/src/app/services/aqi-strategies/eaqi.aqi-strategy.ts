@@ -3,6 +3,7 @@ import { Measurement, PollutantRange, PollutionDescriptor } from 'src/app/model'
 import { find, inRange } from 'lodash';
 
 export class Eaqi implements AqiStrategy {
+  name = 'EAQI';
   private eaqiGrid: Map<string, PollutantRange[]>;
 
   constructor() {
