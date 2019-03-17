@@ -4,15 +4,14 @@ app-single-result-chart {
   width: 100%;
 }
 
-mat-card {
-  width: calc(100% - 70px);
-  height: calc(100% - 70px);
-}
-
 .header {
   width: 100%;
 }
 
 .multi-line-tile {
-  display: block;
+  text-align: center;
+}
+
+.data-sheet-container {
+  min-height: 100%;
 }

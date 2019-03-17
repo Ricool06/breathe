@@ -14,13 +14,13 @@ import { BaseUrlInterceptor } from './interceptors/base-url.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocationResultDataSheetComponent } from './shared/location-result-data-sheet/location-result-data-sheet.component';
 import { SingleResultChartComponent } from './shared/single-result-chart/single-result-chart.component';
-import { MatGridListModule } from '@angular/material';
 import { HumanizeDatePipe } from './pipes/humanize-date.pipe';
 import { PruneRepeatedMeasurementsPipe } from './pipes/prune-repeated-measurements.pipe';
 import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measurements.pipe';
 import { CalculateAqiPipe } from './pipes/calculate-aqi.pipe';
 import { AQI_STRATEGY_TOKEN } from './services/aqi-strategies/aqi-strategy';
 import { Eaqi } from './services/aqi-strategies/eaqi.aqi-strategy';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import { Eaqi } from './services/aqi-strategies/eaqi.aqi-strategy';
     HttpClientModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,
-    MatGridListModule,
+    FlexLayoutModule,
   ],
   providers: [
     {

@@ -27,11 +27,11 @@ export class MapPage {
   }
 
   getSingleResultTime() {
-    return element(by.css('mat-bottom-sheet-container h4'));
+    return element(by.css('mat-bottom-sheet-container > app-location-result-data-sheet > div > div:nth-child(1) > div > h4'));
   }
 
   getSingleResultAqi(): any {
-    return element(by.css('mat-bottom-sheet-container mat-grid-tile:nth-child(3) h1'));
+    return element(by.css('mat-bottom-sheet-container h1.mat-display-4'));
   }
 
   clickACircle() {
