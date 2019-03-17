@@ -18,6 +18,7 @@ import { MatGridListModule } from '@angular/material';
 import { HumanizeDatePipe } from './pipes/humanize-date.pipe';
 import { PruneRepeatedMeasurementsPipe } from './pipes/prune-repeated-measurements.pipe';
 import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measurements.pipe';
+import { CalculateAqiPipe } from './pipes/calculate-aqi.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measure
     HumanizeDatePipe,
     PruneRepeatedMeasurementsPipe,
     PruneNonLatestMeasurementsPipe,
+    CalculateAqiPipe,
   ],
   entryComponents: [
     LocationResultDataSheetComponent,
