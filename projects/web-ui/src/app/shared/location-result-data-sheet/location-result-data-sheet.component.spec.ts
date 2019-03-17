@@ -116,7 +116,7 @@ describe('LocationResultDataSheetComponent', () => {
   it('should display an air quality index', () => {
     createSheetWithData(locationResult);
 
-    const aqiElementText = fixture.nativeElement.querySelector('mat-grid-tile:nth-child(3) h1').textContent;
+    const aqiElementText = fixture.nativeElement.querySelector('h1.mat-display-4').textContent;
 
     expect(aqiElementText).toEqual('Mock AQI pipe result using EAQI');
   });

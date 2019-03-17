@@ -1,20 +1,20 @@
-<mat-grid-list cols="4" rowHeight="100px">
-  <mat-grid-tile [colspan]="4" [rowspan]="1">
-    <div class="header multi-line-tile">
+<div class="data-sheet-container" fxLayout="column" fxLayoutAlign="space-between">
+  <div fxLayout="row">
+    <div>
       <h1 class="mat-h1">{{ locationResult.city }}, {{ locationResult.country }}</h1>
       <h4 class="mat-h4">Latest measurement: {{ locationResult.measurements[0].lastUpdated | humanizeDate }}</h4>
     </div>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="2" [rowspan]="4">
-    <app-single-result-chart
-      [measurements]="locationResult.measurements | pruneRepeatedMeasurements | pruneNonLatestMeasurements"
-    ></app-single-result-chart>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="2" [rowspan]="4">
-    <div class="multi-line-tile">
-      <h4 class="mat-h4">Current air quality here is</h4>
+  </div>
+  <div fxFlex="grow" fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="1rem">
+    <div fxFlex="grow">
+      <app-single-result-chart
+        [measurements]="locationResult.measurements | pruneRepeatedMeasurements | pruneNonLatestMeasurements"
+      ></app-single-result-chart>
+    </div>
+    <div fxFlex="grow" class="multi-line-tile">
+      <h4 class="mat-h4">Latest air quality measurement here is</h4>
       <h1 class="mat-display-4">{{ locationResult.measurements | pruneRepeatedMeasurements | pruneNonLatestMeasurements | calculateAqi:'EAQI' }}</h1>
       <h4 class="mat-h4">according to European air quality standards.</h4>
     </div>
-  </mat-grid-tile>
-</mat-grid-list>
+  </div>
+</div>
