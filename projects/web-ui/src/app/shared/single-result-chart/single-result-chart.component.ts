@@ -43,7 +43,8 @@ export class SingleResultChartComponent implements OnInit, AfterViewInit, OnChan
   private convertMeasurementsToChartData(measurements: Measurement[]): ChartData {
     measurements = (measurements || []).sort(({ parameter: p1 }, { parameter: p2 }) => p1.localeCompare(p2));
 
-    const labels = measurements.map(measurement => `${measurement.parameter} ${measurement.unit}`);
+    const labels = measurements
+      .map(({ parameter, unit, averagingPeriod }) => `${parameter} ${unit} over ${averagingPeriod.value} ${averagingPeriod.unit}`);
     const data = measurements.map(measurement => measurement.value);
     const backgroundColor = measurements.map((_, index) => {
       return new Color([40, 190, 255, 0.6], 'rgb')

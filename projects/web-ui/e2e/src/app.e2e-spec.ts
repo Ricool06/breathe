@@ -90,6 +90,49 @@ describe('workspace-project App', () => {
       expect(page.getBottomSheet().isDisplayed()).toBe(true);
       expect(page.getSingleResultTime().getText()).toEqual('Latest measurement: an hour ago');
     });
+
+    // This test is based on official calculation for EAQI:
+    // http://airindex.eea.europa.eu/
+    it('should display the EAQI value of the selected measurements', async () => {
+      const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
+      const body = JSON.parse(transaction.response.body);
+      const results: LocationResult[] = body.results;
+
+      const now = moment().toISOString();
+
+      results[0].measurements = [
+        {
+          averagingPeriod: {
+            value: 1,
+            unit: 'hours',
+          },
+          lastUpdated: now,
+          parameter: 'no2',
+          sourceName: 'DEFRA',
+          unit: 'µg/m³',
+          value: 150,
+        },
+        {
+          averagingPeriod: {
+            value: 1,
+            unit: 'hours',
+          },
+          lastUpdated: now,
+          parameter: 'pm10',
+          sourceName: 'DEFRA',
+          unit: 'µg/m³',
+          value: 90,
+        },
+      ];
+
+      transaction.response.body = JSON.stringify(body);
+
+      await page.navigateTo();
+      await page.clickACircle();
+
+      expect(page.getBottomSheet().isDisplayed()).toBe(true);
+      expect(page.getSingleResultAqi().getText()).toEqual('Poor');
+    });
   });
 
   afterEach(async () => {

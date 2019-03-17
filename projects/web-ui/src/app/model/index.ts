@@ -27,3 +27,18 @@ export interface LocationResult {
     measurements: Measurement[];
     coordinates: Coordinates;
 }
+
+export enum PollutionDescriptor {
+  'Unknown',
+  'Good',
+  'Fair',
+  'Moderate',
+  'Poor',
+  'Very poor',
+}
+
+export interface PollutantRange {
+  min: number;
+  max: number;
+  descriptor: PollutionDescriptor;
+}

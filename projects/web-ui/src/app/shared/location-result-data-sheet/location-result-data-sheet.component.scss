@@ -9,7 +9,10 @@ mat-card {
   height: calc(100% - 70px);
 }
 
-#header {
+.header {
   width: 100%;
+}
+
+.multi-line-tile {
   display: block;
 }

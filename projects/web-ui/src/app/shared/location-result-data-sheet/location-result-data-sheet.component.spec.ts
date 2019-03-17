@@ -1,11 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 
 import { LocationResultDataSheetComponent } from './location-result-data-sheet.component';
 import * as swagger from '../../../../blueprints/swagger.json';
 import { MAT_BOTTOM_SHEET_DATA, MatGridListModule } from '@angular/material';
 import { LocationResult, Measurement } from 'src/app/model';
-import { Component, Input } from '@angular/core';
-import { SingleResultChartComponent } from '../single-result-chart/single-result-chart.component';
+import { Component, Input, PipeTransform, Pipe } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { PruneNonLatestMeasurementsPipe } from 'src/app/pipes/prune-non-latest-measurements.pipe';
@@ -19,6 +18,13 @@ import { HumanizeDatePipe } from 'src/app/pipes/humanize-date.pipe';
 }) class MockSingleResultChartComponent {
   @Input()
   measurements: Measurement[];
+}
+
+@Pipe({ name: 'calculateAqi', })
+export class MockCalculateAqiPipe implements PipeTransform {
+  transform(value: Measurement[], aqiIndexName: string) {
+    return 'Mock AQI pipe result using ' + aqiIndexName;
+  }
 }
 
 describe('LocationResultDataSheetComponent', () => {
@@ -44,11 +50,11 @@ describe('LocationResultDataSheetComponent', () => {
         PruneNonLatestMeasurementsPipe,
         PruneRepeatedMeasurementsPipe,
         HumanizeDatePipe,
+        MockCalculateAqiPipe,
       ],
       imports: [MatGridListModule],
       providers: [
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: locationResult },
-        { provide: SingleResultChartComponent, useClass: MockSingleResultChartComponent },
       ],
     })
     .compileComponents();
@@ -105,5 +111,13 @@ describe('LocationResultDataSheetComponent', () => {
       fixture.debugElement.query(By.directive(MockSingleResultChartComponent)).componentInstance;
 
     expect(mockChart.measurements).toEqual(measurements);
+  });
+
+  it('should display an air quality index', () => {
+    createSheetWithData(locationResult);
+
+    const aqiElementText = fixture.nativeElement.querySelector('mat-grid-tile:nth-child(3) h1').textContent;
+
+    expect(aqiElementText).toEqual('Mock AQI pipe result using EAQI');
   });
 });

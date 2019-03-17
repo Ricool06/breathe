@@ -18,6 +18,9 @@ import { MatGridListModule } from '@angular/material';
 import { HumanizeDatePipe } from './pipes/humanize-date.pipe';
 import { PruneRepeatedMeasurementsPipe } from './pipes/prune-repeated-measurements.pipe';
 import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measurements.pipe';
+import { CalculateAqiPipe } from './pipes/calculate-aqi.pipe';
+import { AQI_STRATEGY_TOKEN } from './services/aqi-strategies/aqi-strategy';
+import { Eaqi } from './services/aqi-strategies/eaqi.aqi-strategy';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measure
     HumanizeDatePipe,
     PruneRepeatedMeasurementsPipe,
     PruneNonLatestMeasurementsPipe,
+    CalculateAqiPipe,
   ],
   entryComponents: [
     LocationResultDataSheetComponent,
@@ -47,6 +51,7 @@ import { PruneNonLatestMeasurementsPipe } from './pipes/prune-non-latest-measure
       useClass: BaseUrlInterceptor,
       multi: true,
     },
+    { provide: AQI_STRATEGY_TOKEN, useClass: Eaqi, multi: true },
   ],
   bootstrap: [AppComponent],
 })
