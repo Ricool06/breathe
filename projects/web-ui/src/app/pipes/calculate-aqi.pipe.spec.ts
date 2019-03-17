@@ -31,11 +31,11 @@ describe('CalculateAqiPipe', () => {
   });
 
   it('should use the specified strategy to calculate AQI from measurements', () => {
-    expect(pipe.transform([], ['EAQI'])).toEqual('EAQI Result');
-    expect(pipe.transform([], ['USEPA'])).toEqual('USEPA Result');
+    expect(pipe.transform([], 'EAQI')).toEqual('EAQI Result');
+    expect(pipe.transform([], 'USEPA')).toEqual('USEPA Result');
   });
 
   it('should ignore invalid strategy names', () => {
-    expect(pipe.transform([], ['Jimbo\'s AQI'])).toEqual('');
+    expect(pipe.transform([], 'Jimbo\'s AQI')).toEqual('');
   });
 });

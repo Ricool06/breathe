@@ -71,7 +71,8 @@ describe('SingleResultChartComponent', () => {
 
     fixture.detectChanges();
 
-    const labels = mockMeasurements.map(({ parameter, unit }) => `${parameter} ${unit}`);
+    const labels = mockMeasurements
+      .map(({ parameter, unit, averagingPeriod }) => `${parameter} ${unit} over ${averagingPeriod.value} ${averagingPeriod.unit}`);
     const data = mockMeasurements.map(measurement => measurement.value);
 
     expect(chart.data.labels).toEqual(labels);
@@ -100,7 +101,8 @@ describe('SingleResultChartComponent', () => {
     parentComponent.measurements = [...mockMeasurements];
 
     const sortedMeasurements = mockMeasurements.sort(({ parameter: p1 }, { parameter: p2 }) => p1.localeCompare(p2));
-    const sortedLabels = sortedMeasurements.map(({ parameter, unit }) => `${parameter} ${unit}`);
+    const sortedLabels = sortedMeasurements
+      .map(({ parameter, unit, averagingPeriod }) => `${parameter} ${unit} over ${averagingPeriod.value} ${averagingPeriod.unit}`);
     const sortedValues = sortedMeasurements.map(({ value }) => value);
 
     fixture.detectChanges();

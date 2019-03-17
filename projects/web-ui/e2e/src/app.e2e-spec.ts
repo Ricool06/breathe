@@ -91,9 +91,9 @@ describe('workspace-project App', () => {
       expect(page.getSingleResultTime().getText()).toEqual('Latest measurement: an hour ago');
     });
 
-    // This test is based on official calculation for Roadside/Traffic EAQI:
+    // This test is based on official calculation for EAQI:
     // http://airindex.eea.europa.eu/
-    it('should display the EU Roadside CAQI value of the selected measurements', async () => {
+    it('should display the EAQI value of the selected measurements', async () => {
       const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
       const body = JSON.parse(transaction.response.body);
       const results: LocationResult[] = body.results;

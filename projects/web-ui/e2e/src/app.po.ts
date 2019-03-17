@@ -31,7 +31,7 @@ export class MapPage {
   }
 
   getSingleResultAqi(): any {
-    return element(by.css('mat-bottom-sheet-container .mat-display-4'));
+    return element(by.css('mat-bottom-sheet-container mat-grid-tile:nth-child(3) h1'));
   }
 
   clickACircle() {
