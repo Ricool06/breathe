@@ -1,6 +1,7 @@
 import { browser, by, element } from 'protractor';
 
 export class MapPage {
+
   navigateTo() {
     return browser.get(browser.baseUrl);
   }
@@ -27,6 +28,10 @@ export class MapPage {
 
   getSingleResultTime() {
     return element(by.css('mat-bottom-sheet-container h4'));
+  }
+
+  getSingleResultAqi(): any {
+    return element(by.css('mat-bottom-sheet-container .mat-display-4'));
   }
 
   clickACircle() {
