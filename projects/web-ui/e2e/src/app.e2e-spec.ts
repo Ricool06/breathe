@@ -74,6 +74,10 @@ describe('workspace-project App', () => {
     it('should display a location result measurements chart', () => {
       expect(page.getSingleResultChart().isDisplayed()).toBe(true);
     });
+
+    it('should display an historical location result measurements chart', () => {
+      expect(page.getHistoricalResultsChart().isDisplayed()).toBe(true);
+    });
   });
 
   describe('location result data sheet data', () => {
