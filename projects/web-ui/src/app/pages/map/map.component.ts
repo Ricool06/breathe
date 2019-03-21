@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { LoadLatestLocationResults } from 'src/app/actions/latest-location-result.actions';
 import { LatLngBounds } from 'leaflet';
 import { Observable } from 'rxjs';
-import { LocationResult } from 'src/app/model';
+import { LatestResult } from 'src/app/model';
 import { MatBottomSheet } from '@angular/material';
 import { LocationResultDataSheetComponent } from 'src/app/shared/location-result-data-sheet/location-result-data-sheet.component';
 
@@ -14,7 +14,7 @@ import { LocationResultDataSheetComponent } from 'src/app/shared/location-result
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit {
-  public locationResults$: Observable<LocationResult[]>;
+  public locationResults$: Observable<LatestResult[]>;
 
   constructor(private store: Store<fromRoot.State>, private bottomSheet: MatBottomSheet) {
     this.locationResults$ = this.store.pipe(select(fromRoot.selectLocationResults));
@@ -28,7 +28,7 @@ export class MapComponent implements OnInit {
     this.store.dispatch(new LoadLatestLocationResults({ coordinates, radius }));
   }
 
-  public onLocationResultClicked(locationResult: LocationResult) {
+  public onLocationResultClicked(locationResult: LatestResult) {
     this.bottomSheet.open(LocationResultDataSheetComponent, {
       panelClass: 'location-result-data-sheet',
       data: locationResult,

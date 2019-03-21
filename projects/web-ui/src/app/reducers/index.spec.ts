@@ -1,11 +1,11 @@
 import { State, selectLocationResults } from '.';
-import { LocationResult } from '../model';
+import { LatestResult } from '../model';
 import * as swagger from '../../../blueprints/swagger.json';
 
 describe('Root state', () => {
   describe('LocationResults selector', () => {
     it('should retrieve all location results from the state', () => {
-      const mockResults: LocationResult[] =
+      const mockResults: LatestResult[] =
         swagger.paths['/latest'].get.responses['200'].examples['application/json'].results;
 
       const state: State = {

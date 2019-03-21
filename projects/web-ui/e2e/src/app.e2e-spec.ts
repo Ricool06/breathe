@@ -7,7 +7,7 @@ import * as dt from 'dredd-transactions';
 import { environment } from '../../src/environments/environment';
 import { Server } from 'http';
 import * as url from 'url';
-import { LocationResult } from 'src/app/model';
+import { LatestResult } from 'src/app/model';
 import * as moment from 'moment';
 
 let transactionsMap: Map<string, any>;
@@ -84,7 +84,7 @@ describe('workspace-project App', () => {
     it('should display the latest location result measurement time', async () => {
       const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
       const body = JSON.parse(transaction.response.body);
-      const results: LocationResult[] = body.results;
+      const results: LatestResult[] = body.results;
       results.map(result => result.measurements.map(measurement => measurement.lastUpdated = moment().subtract(1, 'hour')));
       transaction.response.body = JSON.stringify(body);
 
@@ -100,7 +100,7 @@ describe('workspace-project App', () => {
     it('should display the EAQI value of the selected measurements', async () => {
       const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
       const body = JSON.parse(transaction.response.body);
-      const results: LocationResult[] = body.results;
+      const results: LatestResult[] = body.results;
 
       const now = moment().toISOString();
 

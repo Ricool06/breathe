@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { LocationResult } from 'src/app/model';
+import { LatestResult } from 'src/app/model';
 
 @Component({
   selector: 'app-location-result-data-sheet',
@@ -9,6 +9,6 @@ import { LocationResult } from 'src/app/model';
 })
 export class LocationResultDataSheetComponent {
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public locationResult: LocationResult) { }
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public locationResult: LatestResult) { }
 
 }

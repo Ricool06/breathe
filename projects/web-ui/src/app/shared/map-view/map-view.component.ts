@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import * as L from 'leaflet';
-import { LocationResult, Coordinates } from 'src/app/model';
+import { LatestResult, Coordinates } from 'src/app/model';
 import { from } from 'rxjs';
 import { distinct, filter, takeWhile } from 'rxjs/operators';
 
@@ -11,16 +11,16 @@ import { distinct, filter, takeWhile } from 'rxjs/operators';
 })
 export class MapViewComponent implements OnInit, OnChanges {
   @Input()
-  public locationResults: LocationResult[];
+  public locationResults: LatestResult[];
 
   @Output()
   public mapBounds = new EventEmitter<L.LatLngBounds>();
 
   @Output()
-  public clickedLocationResult = new EventEmitter<LocationResult>();
+  public clickedLocationResult = new EventEmitter<LatestResult>();
 
   private leafletMap: L.Map;
-  private circles: Map<L.Circle, LocationResult>;
+  private circles: Map<L.Circle, LatestResult>;
 
   constructor() {
     this.circles = new Map();
@@ -42,7 +42,7 @@ export class MapViewComponent implements OnInit, OnChanges {
     this.createNewCircles(currentLocationResults);
   }
 
-  private createNewCircles(currentLocationResults: LocationResult[]) {
+  private createNewCircles(currentLocationResults: LatestResult[]) {
     from(currentLocationResults).pipe(
       distinct(result => `${result.coordinates.latitude},${result.coordinates.longitude}`),
       filter(result => this.circles.size === 0 || !this.alreadyHasCircle(result)),
@@ -50,17 +50,17 @@ export class MapViewComponent implements OnInit, OnChanges {
     ).subscribe(result => this.addCircleForLocationResult(result));
   }
 
-  private alreadyHasCircle(locationResult: LocationResult): boolean {
+  private alreadyHasCircle(locationResult: LatestResult): boolean {
     return Array.from(this.circles.keys())
       .some(circle => this.isAtCircle(locationResult, circle));
   }
 
-  private isAtCircle(locationResult: LocationResult, circle: L.Circle): boolean {
+  private isAtCircle(locationResult: LatestResult, circle: L.Circle): boolean {
     const resultLatLng = this.convertCoordinatesToLatLng(locationResult.coordinates);
     return !circle || circle.getLatLng().equals(resultLatLng);
   }
 
-  private addCircleForLocationResult(locationResult: LocationResult) {
+  private addCircleForLocationResult(locationResult: LatestResult) {
     const resultLatLng = this.convertCoordinatesToLatLng(locationResult.coordinates);
     const newCircle = L.circle(resultLatLng, {
       color: 'red',

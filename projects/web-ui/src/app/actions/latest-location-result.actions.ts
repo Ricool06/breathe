@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { LocationResult } from '../model';
+import { LatestResult } from '../model';
 import { LatLng } from 'leaflet';
 
 export enum LatestLocationResultActionTypes {
@@ -15,7 +15,7 @@ export class LoadLatestLocationResults implements Action {
 
 export class LoadLatestLocationResultsSuccess implements Action {
   readonly type = LatestLocationResultActionTypes.LoadLatestLocationResultsSuccess;
-  constructor(public payload: { locationResults: LocationResult[] }) { }
+  constructor(public payload: { locationResults: LatestResult[] }) { }
 }
 
 export class LoadLatestLocationResultsFailure implements Action {

@@ -21,6 +21,7 @@ import { CalculateAqiPipe } from './pipes/calculate-aqi.pipe';
 import { AQI_STRATEGY_TOKEN } from './services/aqi-strategies/aqi-strategy';
 import { Eaqi } from './services/aqi-strategies/eaqi.aqi-strategy';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HistoricalResultsChartComponent } from './shared/historical-results-chart/historical-results-chart.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     PruneRepeatedMeasurementsPipe,
     PruneNonLatestMeasurementsPipe,
     CalculateAqiPipe,
+    HistoricalResultsChartComponent,
   ],
   entryComponents: [
     LocationResultDataSheetComponent,

@@ -1,9 +1,9 @@
-import { LocationResult } from '../model';
+import { LatestResult } from '../model';
 import { LatestLocationResultActionTypes, LatestLocationResultActions } from '../actions/latest-location-result.actions';
 
 
 export interface State {
-  locationResults: LocationResult[];
+  locationResults: LatestResult[];
 }
 
 export const initialState: State = {

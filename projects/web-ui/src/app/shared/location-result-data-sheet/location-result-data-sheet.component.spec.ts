@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/test
 import { LocationResultDataSheetComponent } from './location-result-data-sheet.component';
 import * as swagger from '../../../../blueprints/swagger.json';
 import { MAT_BOTTOM_SHEET_DATA, MatGridListModule } from '@angular/material';
-import { LocationResult, Measurement } from 'src/app/model';
+import { LatestResult, Measurement } from 'src/app/model';
 import { Component, Input, PipeTransform, Pipe } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import * as moment from 'moment';
@@ -30,9 +30,9 @@ export class MockCalculateAqiPipe implements PipeTransform {
 describe('LocationResultDataSheetComponent', () => {
   let component: LocationResultDataSheetComponent;
   let fixture: ComponentFixture<LocationResultDataSheetComponent>;
-  let locationResult: LocationResult;
+  let locationResult: LatestResult;
 
-  const createSheetWithData = (overridenLocationResult: LocationResult) => {
+  const createSheetWithData = (overridenLocationResult: LatestResult) => {
     TestBed.overrideProvider(MAT_BOTTOM_SHEET_DATA, { useValue: overridenLocationResult });
 
     fixture = TestBed.createComponent(LocationResultDataSheetComponent);

@@ -6,7 +6,7 @@ import { hot, cold } from 'jasmine-marbles';
 import * as swagger from '../../../blueprints/swagger.json';
 import { LatestLocationResultEffects } from './latest-location-result.effects';
 import { LatestMeasurementsService } from '../services/latest-measurements.service';
-import { LocationResult } from '../model';
+import { LatestResult } from '../model';
 import { LatLng } from 'leaflet';
 import {
   LoadLatestLocationResults,
@@ -39,9 +39,9 @@ describe('LatestLocationResultEffects', () => {
   });
 
   it('should emit a success action upon getting data', () => {
-    const locationResults: LocationResult[] =
+    const locationResults: LatestResult[] =
       swagger.paths['/latest'].get.responses[200].examples['application/json'].results.map((result) => {
-        const newOne = {...result} as LocationResult;
+        const newOne = {...result} as LatestResult;
         return newOne;
       });
 
