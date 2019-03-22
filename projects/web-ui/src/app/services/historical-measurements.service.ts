@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Moment } from 'moment';
 import { LatLng } from 'leaflet';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable } from 'rxjs';
-import { expand, takeUntil, filter, map, takeWhile } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { MeasurementsResult } from '../model';
 
 @Injectable({
