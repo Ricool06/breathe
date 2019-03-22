@@ -12,14 +12,7 @@ import { MeasurementsResult } from '../model';
 export class HistoricalMeasurementsService {
   constructor(private httpClient: HttpClient) { }
 
-  get(dateFrom: Moment, dateTo: Moment, coordinates: LatLng): any {
-    return of(1).pipe(
-      expand((page) => this.request(page, dateFrom, dateTo, coordinates)),
-      takeWhile(results => results.length > 0),
-    );
-  }
-
-  private request(page: number, dateFrom: Moment, dateTo: Moment, coordinates: LatLng): Observable<MeasurementsResult[]> {
+  get(page: number, dateFrom: Moment, dateTo: Moment, coordinates: LatLng): Observable<MeasurementsResult[]> {
     return this.httpClient.get<{ results: MeasurementsResult[] }>(
       '/measurements', {
         params: {
@@ -29,11 +22,8 @@ export class HistoricalMeasurementsService {
           limit: '10000',
           date_from: dateFrom.toISOString(false),
           date_to: dateTo.toISOString(false),
+          page: page.toString(),
         },
       }).pipe(map(response => response.results));
-  }
-
-  private isLastPage(results: MeasurementsResult[]) {
-    return results.length === 0;
   }
 }
