@@ -14,8 +14,6 @@ import { LatestMeasurementsService } from '../services/latest-measurements.servi
 @Injectable()
 export class LatestLocationResultEffects {
 
-
-
   constructor(
     private actions$: Actions,
     private latestMeasurementsService: LatestMeasurementsService) {}

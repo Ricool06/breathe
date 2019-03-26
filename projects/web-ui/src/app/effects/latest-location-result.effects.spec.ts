@@ -69,7 +69,6 @@ describe('LatestLocationResultEffects', () => {
     const sourceAction = new LoadLatestLocationResults({ coordinates, radius });
     const failureAction = new LoadLatestLocationResultsFailure({ error });
 
-
     actions$ = hot('--i-', { i: sourceAction });
     const expected$ = cold('--o', { o: failureAction });
 
