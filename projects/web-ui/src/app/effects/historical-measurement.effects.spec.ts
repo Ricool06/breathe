@@ -6,13 +6,17 @@ import { HistoricalMeasurementEffects } from './historical-measurement.effects';
 import { HistoricalMeasurementsService } from '../services/historical-measurements.service';
 import * as swagger from 'blueprints/swagger.json';
 import { cloneDeep } from 'lodash';
-import { LoadHistoricalMeasurements, LoadHistoricalMeasurementsSuccess, LoadHistoricalMeasurementsFailure } from '../actions/historical-measurement.actions';
+import {
+  LoadHistoricalMeasurements,
+  LoadHistoricalMeasurementsSuccess,
+  LoadHistoricalMeasurementsFailure
+} from '../actions/historical-measurement.actions';
 import { LatLng } from 'leaflet';
 import * as moment from 'moment';
 import { hot, cold } from 'jasmine-marbles';
 import { MeasurementsResult } from '../model';
 
-fdescribe('HistoricalMeasurementEffects', () => {
+describe('HistoricalMeasurementEffects', () => {
   let actions$: Observable<any>;
   let effects: HistoricalMeasurementEffects;
   let historicalMeasurementsService: jasmine.SpyObj<HistoricalMeasurementsService>;
@@ -20,7 +24,7 @@ fdescribe('HistoricalMeasurementEffects', () => {
   beforeEach(() => {
     historicalMeasurementsService =
       jasmine.createSpyObj('historicalMeasurementsService', ['get']);
-    
+
     TestBed.configureTestingModule({
       providers: [
         HistoricalMeasurementEffects,

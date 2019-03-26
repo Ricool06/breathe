@@ -30,10 +30,10 @@ export class HistoricalMeasurementEffects {
         expand(page => of(page + 1)),
         flatMap(page => this.historicalMeasurementsService.get(page, dateFrom, dateTo, coordinates)),
         takeWhile(results => results.length > 0),
+        scan((accumulator: MeasurementsResult[], thisPage: MeasurementsResult[]) => [...accumulator, ...thisPage]),
+        map(results => new LoadHistoricalMeasurementsSuccess({ results })),
         catchError(error => of(new LoadHistoricalMeasurementsFailure({ error })))
       );
-    }),
-    scan((accumulator: MeasurementsResult[], thisPage: MeasurementsResult[]) => [...accumulator, ...thisPage]),
-    map(results => new LoadHistoricalMeasurementsSuccess({ results })),
+    })
   );
 }
