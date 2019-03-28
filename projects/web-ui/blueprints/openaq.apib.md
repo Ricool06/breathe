@@ -117,6 +117,22 @@ Lists all measurements matching the criteria in the parameters
               "latitude": 39.2133,
               "longitude": 117.1837
             }
+          },
+          {
+            "location": " 淮河道",
+            "city": "天津市",
+            "country": "CN",
+            "parameter": "pm10",
+            "date": {
+              "utc": "2019-03-20T21:00:00.000Z",
+              "local": "2019-03-20T21:00:00+00:00"
+            },
+            "value": 108,
+            "unit": "µg/m³",
+            "coordinates": {
+              "latitude": 39.2133,
+              "longitude": 117.1837
+            }
           }
         ]
       }
