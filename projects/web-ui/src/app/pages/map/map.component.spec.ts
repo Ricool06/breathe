@@ -8,7 +8,6 @@ import { StoreModule, Store } from '@ngrx/store';
 import { LatLngBounds } from 'leaflet';
 import { LoadLatestLocationResults, LoadLatestLocationResultsSuccess } from 'src/app/actions/latest-location-result.actions';
 import * as fromRoot from '../../reducers';
-import { State } from '../../reducers';
 import { LatestResult } from 'src/app/model';
 import * as swagger from '../../../../blueprints/swagger.json';
 import { LocationResultDataSheetComponent } from 'src/app/shared/location-result-data-sheet/location-result-data-sheet.component';
@@ -31,7 +30,7 @@ class MockMapViewComponent {
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
-  let store: Store<State>;
+  let store: Store<fromRoot.State>;
   let locationResults: LatestResult[];
   let bottomSheet: jasmine.SpyObj<MatBottomSheet>;
 

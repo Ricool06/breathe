@@ -22,6 +22,7 @@ import { AQI_STRATEGY_TOKEN } from './services/aqi-strategies/aqi-strategy';
 import { Eaqi } from './services/aqi-strategies/eaqi.aqi-strategy';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HistoricalResultsChartComponent } from './shared/historical-results-chart/historical-results-chart.component';
+import { HistoricalMeasurementEffects } from './effects/historical-measurement.effects';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { HistoricalResultsChartComponent } from './shared/historical-results-cha
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([LatestLocationResultEffects]),
+    EffectsModule.forRoot([LatestLocationResultEffects, HistoricalMeasurementEffects]),
     HttpClientModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,

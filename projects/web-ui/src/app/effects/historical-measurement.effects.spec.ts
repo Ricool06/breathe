@@ -52,7 +52,7 @@ describe('HistoricalMeasurementEffects', () => {
 
     const coordinates = new LatLng(1, 1);
     const dateTo = moment();
-    const dateFrom = dateTo.subtract(7, 'days');
+    const dateFrom = dateTo.clone().subtract(7, 'days');
 
     const sourceAction = new LoadHistoricalMeasurements({ coordinates, dateFrom, dateTo });
     const page1Action = new LoadHistoricalMeasurementsSuccess({ results: page1Results });
@@ -73,7 +73,7 @@ describe('HistoricalMeasurementEffects', () => {
 
     const coordinates = new LatLng(1, 1);
     const dateTo = moment();
-    const dateFrom = dateTo.subtract(7, 'days');
+    const dateFrom = dateTo.clone().subtract(7, 'days');
 
     const sourceAction = new LoadHistoricalMeasurements({ coordinates, dateFrom, dateTo });
     const failureAction = new LoadHistoricalMeasurementsFailure({ error });

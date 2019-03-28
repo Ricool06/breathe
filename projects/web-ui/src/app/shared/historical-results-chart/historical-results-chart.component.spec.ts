@@ -78,7 +78,6 @@ describe('HistoricalResultsChartComponent', () => {
     };
 
     mockMeasurementsResults.push(duplicateParameterResult);
-    console.log(mockMeasurementsResults.length);
 
     parentComponent.measurementsResults = mockMeasurementsResults;
 
