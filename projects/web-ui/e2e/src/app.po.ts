@@ -26,6 +26,10 @@ export class MapPage {
     return element(by.css('mat-bottom-sheet-container app-single-result-chart canvas'));
   }
 
+  getHistoricalResultsChart() {
+    return element(by.css('mat-bottom-sheet-container app-historical-results-chart canvas'));
+  }
+
   getSingleResultTime() {
     return element(by.css('mat-bottom-sheet-container > app-location-result-data-sheet > div > div:nth-child(1) > div > h4'));
   }

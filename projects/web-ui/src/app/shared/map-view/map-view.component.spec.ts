@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapViewComponent } from './map-view.component';
 import { Component, ViewChild } from '@angular/core';
 import * as swagger from '../../../../blueprints/swagger.json';
-import { LocationResult } from 'src/app/model';
+import { LatestResult } from 'src/app/model';
 import * as L from 'leaflet';
 
 @Component({
@@ -16,15 +16,15 @@ import * as L from 'leaflet';
 })
 class MockParentComponent {
   @ViewChild(MapViewComponent) childComponent: MapViewComponent;
-  locationResults: LocationResult[];
+  locationResults: LatestResult[];
   mapBounds: L.LatLngBounds;
-  clickedLocationResult: LocationResult;
+  clickedLocationResult: LatestResult;
 
   onMapBoundsChange(newMapBounds: L.LatLngBounds) {
     this.mapBounds = newMapBounds;
   }
 
-  onCircleClick(clickedLocationResult: LocationResult) {
+  onCircleClick(clickedLocationResult: LatestResult) {
     this.clickedLocationResult = clickedLocationResult;
   }
 }
@@ -93,7 +93,7 @@ describe('MapViewComponent', () => {
   });
 
   it('should add circles at each location result idempotently', async () => {
-    const locationResults: LocationResult[] =
+    const locationResults: LatestResult[] =
       swagger.paths['/latest'].get.responses[200].examples['application/json'].results;
 
     const originalCircleFunc = L.circle;
@@ -116,7 +116,7 @@ describe('MapViewComponent', () => {
     expect(circles.length).toBe(locationResults.length);
     circles.map(c => expect(c.addTo).toHaveBeenCalledWith(leafletMap));
 
-    const extraResult: LocationResult = { ...locationResults[0] };
+    const extraResult: LatestResult = { ...locationResults[0] };
     extraResult.coordinates.latitude = 50;
     extraResult.coordinates.longitude = 10;
 
@@ -131,7 +131,7 @@ describe('MapViewComponent', () => {
   });
 
   it('should emit the location result for a clicked circle', async () => {
-    const locationResults: LocationResult[] =
+    const locationResults: LatestResult[] =
       swagger.paths['/latest'].get.responses[200].examples['application/json'].results;
 
     const originalCircleFunc = L.circle;

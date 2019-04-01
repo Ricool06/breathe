@@ -8,7 +8,7 @@ OpenAQ is the Open Air Quality API.
 
 Resources related to measurements.
 
-## Measurement Collection [/latest{?limit,has_geo}]
+## Latest Measurement Collection [/latest]
 ### List All Latest Measurements [GET]
 
 Lists the latest measurements
@@ -64,6 +64,71 @@ Lists the latest measurements
                 }
               }
             ],
+            "coordinates": {
+              "latitude": 39.2133,
+              "longitude": 117.1837
+            }
+          }
+        ]
+      }
+
+## Measurement Collection [/measurements]
+### List Any Measurements [GET]
+
+Lists all measurements matching the criteria in the parameters
+
++ Parameters
+
+    + page: `1` (number) - The page of results to return
+    + limit: `1` (number, optional) - The max number of measurements to return.
+      + Default: `100`
+    + has_geo: `true` (boolean, optional) - If true, returns only measurements with location info.
+      + Default: `false`
+    + coordinates: `39.2133,117.1837` (string, optional) - Center point used to get measurements within a certain area.
+    + radius: `100` (number, optional) - Radius (in meters) used to get measurements within a certain area, must be used with coordinates.
+      + Default: 2500
+    + date_from: `2019-03-20T21:00:00` (string, optional) - Show results after a certain date. This acts on the utc timestamp of each measurement.
+    + date_to: `2019-01-21T22:00:00` (string, optional) - Show results before a certain date. This acts on the utc timestamp of each measurement.
+
++ Response 200 (application/json)
+
+      {
+        "meta": {
+          "name": "openaq-api",
+          "license": "CC BY 4.0",
+          "website": "https://docs.openaq.org/",
+          "page": 1,
+          "limit": 10000,
+          "found": 888
+        },
+        "results": [
+          {
+            "location": " 淮河道",
+            "city": "天津市",
+            "country": "CN",
+            "parameter": "o3",
+            "date": {
+              "utc": "2019-03-20T21:00:00.000Z",
+              "local": "2019-03-20T21:00:00+00:00"
+            },
+            "value": 51,
+            "unit": "µg/m³",
+            "coordinates": {
+              "latitude": 39.2133,
+              "longitude": 117.1837
+            }
+          },
+          {
+            "location": " 淮河道",
+            "city": "天津市",
+            "country": "CN",
+            "parameter": "pm10",
+            "date": {
+              "utc": "2019-03-20T21:00:00.000Z",
+              "local": "2019-03-20T21:00:00+00:00"
+            },
+            "value": 108,
+            "unit": "µg/m³",
             "coordinates": {
               "latitude": 39.2133,
               "longitude": 117.1837

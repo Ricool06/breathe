@@ -17,4 +17,9 @@
       <h4 class="mat-h4">according to European air quality standards.</h4>
     </div>
   </div>
+  <div fxLayout="row">
+    <div fxFlex="grow">
+      <app-historical-results-chart [measurementsResults]="measurementsResults$ | async"></app-historical-results-chart>
+    </div>
+  </div>
 </div>
