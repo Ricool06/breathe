@@ -9,6 +9,7 @@ import { MeasurementsResult } from 'src/app/model';
 import * as swagger from 'blueprints/swagger.json';
 import { cloneDeep, uniqWith, isEqual, uniq } from 'lodash';
 import * as moment from 'moment';
+import * as Color from 'color';
 
 @Component({
   selector: 'app-mock-parent',
@@ -64,6 +65,7 @@ describe('HistoricalResultsChartComponent', () => {
     const canvas = fixture.debugElement.query(By.css('canvas')).nativeElement;
     expect(mockStaticChartFactory.createChart).toHaveBeenCalledWith(canvas, jasmine.anything());
     expect(chart.config.type).toEqual('line');
+    expect(chart.config.options.scales.xAxes[0].type).toEqual('time');
   });
 
   it('should update measurements based on input', () => {
@@ -89,7 +91,7 @@ describe('HistoricalResultsChartComponent', () => {
     expectedLabels.forEach(label => expectedDataArrayMap.set(label, []));
 
     mockMeasurementsResults.forEach(({ parameter, value, date }) => {
-      expectedDataArrayMap.get(parameter).push({ x: date.utc.toString(), y: value });
+      expectedDataArrayMap.get(parameter).push({ x: moment(date.utc).toDate(), y: value });
     });
     const expectedDataArrays = Array.from(expectedDataArrayMap.values());
 
@@ -98,5 +100,38 @@ describe('HistoricalResultsChartComponent', () => {
 
     expect(labels).toEqual(expectedLabels);
     expect(dataArrays).toEqual(expectedDataArrays);
+  });
+
+  it('should sort datasets alphabetically', () => {
+    mockMeasurementsResults = ['B', 'D', 'A', 'E', 'F', 'C'].map((parameter) => {
+      return {
+        ...mockMeasurementsResults[0],
+        parameter,
+      };
+    });
+
+    parentComponent.measurementsResults = mockMeasurementsResults;
+
+    fixture.detectChanges();
+
+    const labels = chart.data.datasets.map(dataset => dataset.label);
+    expect(labels).toEqual(['A', 'B', 'C', 'D', 'E', 'F']);
+  });
+
+  it('should set unique chart colours', () => {
+    mockMeasurementsResults = ['A', 'B', 'C', 'D', 'E', 'F'].map((parameter) => {
+      return {
+        ...mockMeasurementsResults[0],
+        parameter,
+      };
+    });
+
+    parentComponent.measurementsResults = mockMeasurementsResults;
+
+    fixture.detectChanges();
+
+    const colours = chart.data.datasets.map(dataset => dataset.backgroundColor);
+
+    colours.forEach((colour, index) => expect(colours.lastIndexOf(colour)).toBe(index, 'Not all colours are different'));
   });
 });

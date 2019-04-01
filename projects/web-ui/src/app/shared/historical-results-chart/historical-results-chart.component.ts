@@ -3,6 +3,8 @@ import { StaticChartFactoryService } from 'src/app/services/static-chart-factory
 import { Chart, ChartPoint, ChartDataSets } from 'chart.js';
 import { MeasurementsResult } from 'src/app/model';
 import { uniq } from 'lodash';
+import * as moment from 'moment';
+import * as Color from 'color';
 
 @Component({
   selector: 'app-historical-results-chart',
@@ -25,6 +27,15 @@ export class HistoricalResultsChartComponent implements OnInit, AfterViewInit, O
       this.chartCanvas.nativeElement,
       {
         type: 'line',
+        options: {
+          scales: {
+            xAxes: [
+              {
+                type: 'time',
+              },
+            ],
+          },
+        },
       }
     );
   }
@@ -33,19 +44,26 @@ export class HistoricalResultsChartComponent implements OnInit, AfterViewInit, O
     if (this.chart) {
       const measurementsResults: MeasurementsResult[] = changes.measurementsResults.currentValue || [];
 
-      const labels = uniq(measurementsResults.map(result => result.parameter));
+      const labels = uniq(measurementsResults.map(result => result.parameter)).sort();
 
       const dataArrayMap = new Map<string, ChartPoint[]>();
       labels.forEach(label => dataArrayMap.set(label, []));
 
       measurementsResults.forEach(({ parameter, value, date }) => {
-        dataArrayMap.get(parameter).push({ x: date.utc.toString(), y: value });
+        dataArrayMap.get(parameter).push({ x: moment(date.utc).toDate(), y: value });
       });
 
-      this.chart.data.datasets = Array.from(dataArrayMap.entries()).map(([label, chartPoints]) => ({ label, data: chartPoints }))
+      this.chart.data.datasets = Array.from(dataArrayMap.entries())
+        .map(([label, chartPoints], index) => ({ label, data: chartPoints, backgroundColor: this.getColourFromIndex(index) }));
 
       this.chart.update();
     }
   }
 
+  private getColourFromIndex(index: number) {
+    return new Color([40, 190, 255, 0.6], 'rgb')
+        .rotate(-index * 45)
+        .lighten(0.2)
+        .rgb().string();
+  }
 }

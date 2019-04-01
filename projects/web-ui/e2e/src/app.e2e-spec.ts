@@ -9,6 +9,7 @@ import { Server } from 'http';
 import * as url from 'url';
 import { LatestResult } from 'src/app/model';
 import * as moment from 'moment';
+import { cloneDeep } from 'lodash';
 
 let transactionsMap: Map<string, any>;
 
@@ -39,8 +40,8 @@ describe('workspace-project App', () => {
       expect(error).toBeFalsy();
       result.transactions
         .map(transaction => transactionsMap.set(
-          generateTransactionMapKey(transaction.request.method, transaction.request.uri),
-          transaction));
+            generateTransactionMapKey(transaction.request.method, transaction.request.uri),
+            transaction));
     });
 
     page = new MapPage();
@@ -59,6 +60,10 @@ describe('workspace-project App', () => {
 
   describe('circles', () => {
     it('should display a sheet with location & air quality data when clicked', async () => {
+      const measurementsTransaction = transactionsMap.get(generateTransactionMapKey('GET', '/measurements'));
+      const originalBody = JSON.parse(measurementsTransaction.response.body);
+      mockTransactionResponseBodies(measurementsTransaction, originalBody, { ...originalBody, results: [] });
+
       await page.clickACircle();
       expect(page.getBottomSheet().isDisplayed()).toBe(true);
     });
@@ -66,6 +71,10 @@ describe('workspace-project App', () => {
 
   describe('location result data sheet', () => {
     beforeEach(async () => {
+      const measurementsTransaction = transactionsMap.get(generateTransactionMapKey('GET', '/measurements'));
+      const originalBody = JSON.parse(measurementsTransaction.response.body);
+      mockTransactionResponseBodies(measurementsTransaction, originalBody, { ...originalBody, results: [] });
+
       await page.navigateTo();
       await page.clickACircle();
       expect(page.getBottomSheet().isDisplayed()).toBe(true);
@@ -81,6 +90,12 @@ describe('workspace-project App', () => {
   });
 
   describe('location result data sheet data', () => {
+    beforeEach(() => {
+      const measurementsTransaction = transactionsMap.get(generateTransactionMapKey('GET', '/measurements'));
+      const originalBody = JSON.parse(measurementsTransaction.response.body);
+      mockTransactionResponseBodies(measurementsTransaction, originalBody, { ...originalBody, results: [] });
+    });
+
     it('should display the latest location result measurement time', async () => {
       const transaction = transactionsMap.get(generateTransactionMapKey('GET', '/latest'));
       const body = JSON.parse(transaction.response.body);
@@ -148,7 +163,7 @@ describe('workspace-project App', () => {
   });
 });
 
-function generateTransactionMapKey(method, uri) {
+function generateTransactionMapKey(method, uri): string {
   return `${method} ${url.parse(uri).pathname}`;
 }
 
@@ -156,4 +171,15 @@ function matchRequestWithResponse(req: express.Request, res: express.Response) {
   const { response } = transactionsMap.get(generateTransactionMapKey(req.method, req.url));
 
   res.status(response.status).json(JSON.parse(response.body));
+}
+
+function mockTransactionResponseBodies(transaction: { response: express.Response }, ...responseBodies: string[]) {
+  const responseBodiesIterator = responseBodies.values();
+
+  Object.defineProperty(transaction.response, 'body',
+    {
+      get() {
+        return JSON.stringify(responseBodiesIterator.next().value);
+      },
+    });
 }
