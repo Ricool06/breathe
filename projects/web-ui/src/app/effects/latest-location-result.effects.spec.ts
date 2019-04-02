@@ -14,6 +14,8 @@ import {
   LatestLocationResultActions,
   LoadLatestLocationResultsFailure
 } from '../actions/latest-location-result.actions';
+import { cloneDeep } from 'lodash';
+import * as moment from 'moment';
 
 describe('LatestLocationResultEffects', () => {
   let actions$: Observable<LatestLocationResultActions>;
@@ -73,5 +75,31 @@ describe('LatestLocationResultEffects', () => {
     const expected$ = cold('--o', { o: failureAction });
 
     expect(effects.getLatestLocationResults$).toBeObservable(expected$);
+  });
+
+  it('should filter non-latest result objects at the same location', () => {
+    const locationResults: LatestResult[] =
+      [cloneDeep(swagger.paths['/latest'].get.responses[200].examples['application/json'].results[0])];
+
+    const newerResult = cloneDeep(locationResults[0]);
+    newerResult.measurements
+      .forEach(measurement => measurement.lastUpdated = moment(measurement.lastUpdated).add(1, 'hour'));
+
+    locationResults.push(newerResult);
+
+    latestMeasurementsService.getInRadius.and.returnValue(of(locationResults));
+
+    const expectedLocationResults = [newerResult];
+
+    const radius = 2500;
+    const coordinates: LatLng = new LatLng(1, 1);
+
+    const sourceAction = new LoadLatestLocationResults({ coordinates, radius });
+    const successAction = new LoadLatestLocationResultsSuccess({ locationResults: expectedLocationResults });
+
+    actions$ = hot('--i-', { i: sourceAction });
+    const expectedActions$ = cold('--o', { o: successAction });
+
+    expect(effects.getLatestLocationResults$).toBeObservable(expectedActions$);
   });
 });

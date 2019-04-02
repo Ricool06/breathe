@@ -9,7 +9,6 @@ import { Server } from 'http';
 import * as url from 'url';
 import { LatestResult } from 'src/app/model';
 import * as moment from 'moment';
-import { cloneDeep } from 'lodash';
 
 let transactionsMap: Map<string, any>;
 
