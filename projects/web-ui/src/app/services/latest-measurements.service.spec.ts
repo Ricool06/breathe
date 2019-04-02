@@ -48,5 +48,6 @@ describe('LatestMeasurementsService', () => {
       testRequest.flush(goodResponse);
 
       httpMock.verify();
-    }));
+    })
+  );
 });
