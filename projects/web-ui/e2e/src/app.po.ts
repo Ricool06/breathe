@@ -30,6 +30,10 @@ export class MapPage {
     return element(by.css('mat-bottom-sheet-container app-historical-results-chart canvas'));
   }
 
+  getWeekSlider() {
+    return element(by.css('mat-bottom-sheet-container mat-slider'));
+  }
+
   getSingleResultTime() {
     return element(by.css('mat-bottom-sheet-container > app-location-result-data-sheet > div > div:nth-child(1) > div > h4'));
   }
