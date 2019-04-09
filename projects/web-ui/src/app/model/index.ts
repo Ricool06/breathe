@@ -58,3 +58,8 @@ export interface PollutantRange {
   max: number;
   descriptor: PollutionDescriptor;
 }
+
+export interface MomentRange {
+  dateFrom: Moment;
+  dateTo: Moment;
+}

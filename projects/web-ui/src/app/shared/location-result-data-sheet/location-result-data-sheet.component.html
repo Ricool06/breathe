@@ -19,7 +19,10 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="grow">
-      <app-historical-results-chart [measurementsResults]="measurementsResults$ | async"></app-historical-results-chart>
+      <div fxLayout="column">
+        <app-historical-results-chart [measurementsResults]="measurementsResults$ | async"></app-historical-results-chart>
+        <app-week-slider (dateRange)="changeDateRange($event)"></app-week-slider>
+      </div>
     </div>
   </div>
 </div>

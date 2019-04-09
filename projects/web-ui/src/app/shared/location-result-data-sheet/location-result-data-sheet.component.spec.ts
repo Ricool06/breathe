@@ -4,8 +4,8 @@ import { LocationResultDataSheetComponent } from './location-result-data-sheet.c
 import * as swagger from '../../../../blueprints/swagger.json';
 import * as fromRoot from '../../reducers';
 import { MAT_BOTTOM_SHEET_DATA, MatGridListModule } from '@angular/material';
-import { LatestResult, Measurement, MeasurementsResult } from 'src/app/model';
-import { Component, Input, PipeTransform, Pipe } from '@angular/core';
+import { LatestResult, Measurement, MeasurementsResult, MomentRange } from 'src/app/model';
+import { Component, Input, PipeTransform, Pipe, Output, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { PruneNonLatestMeasurementsPipe } from 'src/app/pipes/prune-non-latest-measurements.pipe';
@@ -29,6 +29,14 @@ import { LatLng } from 'leaflet';
 }) class MockHistoricalResultsChartComponent {
   @Input()
   measurementsResults: MeasurementsResult[];
+}
+
+@Component({
+  selector: 'app-week-slider',
+  template: '',
+}) class MockWeekSliderComponent {
+  @Output()
+  dateRange = new EventEmitter<MomentRange>();
 }
 
 @Pipe({ name: 'calculateAqi', })
@@ -76,6 +84,7 @@ describe('LocationResultDataSheetComponent', () => {
         PruneRepeatedMeasurementsPipe,
         MockHumanizeDatePipe,
         MockCalculateAqiPipe,
+        MockWeekSliderComponent,
       ],
       providers: [
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: locationResult },
@@ -176,6 +185,29 @@ describe('LocationResultDataSheetComponent', () => {
     });
 
     createSheetWithData(locationResult);
+
+    jasmine.clock().uninstall();
+  });
+
+  it('should dispatch an action to load historical measurements on week slider change', (done) => {
+    const { latitude, longitude } = locationResult.coordinates;
+    const coordinates = new LatLng(latitude, longitude);
+    const dateTo = moment().subtract(8, 'weeks');
+    const dateFrom = dateTo.clone().subtract(7, 'days');
+
+    createSheetWithData(locationResult);
+
+    jasmine.clock().mockDate(dateTo.toDate());
+    spyOn(store, 'dispatch').and.callFake((action: LoadHistoricalMeasurements) => {
+      expect(action.payload.coordinates).toEqual(coordinates);
+      expect(action.payload.dateFrom.toISOString()).toEqual(dateFrom.toISOString());
+      expect(action.payload.dateTo.toISOString()).toEqual(dateTo.toISOString());
+      done();
+    });
+
+    const slider: MockWeekSliderComponent =
+      fixture.debugElement.query(By.directive(MockWeekSliderComponent)).componentInstance;
+    slider.dateRange.emit({ dateFrom, dateTo });
 
     jasmine.clock().uninstall();
   });

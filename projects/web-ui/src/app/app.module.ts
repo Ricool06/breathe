@@ -23,6 +23,8 @@ import { Eaqi } from './services/aqi-strategies/eaqi.aqi-strategy';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HistoricalResultsChartComponent } from './shared/historical-results-chart/historical-results-chart.component';
 import { HistoricalMeasurementEffects } from './effects/historical-measurement.effects';
+import { WeekSliderComponent } from './shared/week-slider/week-slider.component';
+import { MatSliderModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { HistoricalMeasurementEffects } from './effects/historical-measurement.e
     PruneNonLatestMeasurementsPipe,
     CalculateAqiPipe,
     HistoricalResultsChartComponent,
+    WeekSliderComponent,
   ],
   entryComponents: [
     LocationResultDataSheetComponent,
@@ -47,6 +50,7 @@ import { HistoricalMeasurementEffects } from './effects/historical-measurement.e
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,
     FlexLayoutModule,
+    MatSliderModule,
   ],
   providers: [
     {

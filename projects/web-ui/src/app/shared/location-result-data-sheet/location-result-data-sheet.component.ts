@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { LatestResult, MeasurementsResult } from 'src/app/model';
+import { LatestResult, MeasurementsResult, MomentRange } from 'src/app/model';
 import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
@@ -29,4 +29,11 @@ export class LocationResultDataSheetComponent implements OnInit {
     this.store.dispatch(new LoadHistoricalMeasurements({ coordinates, dateFrom, dateTo }));
   }
 
+  changeDateRange(dateRange: MomentRange) {
+    const { latitude, longitude } = this.locationResult.coordinates;
+    const coordinates = new LatLng(latitude, longitude);
+    const { dateFrom, dateTo } = dateRange;
+
+    this.store.dispatch(new LoadHistoricalMeasurements({ coordinates, dateFrom, dateTo }));
+  }
 }
