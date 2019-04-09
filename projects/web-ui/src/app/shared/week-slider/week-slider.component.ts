@@ -10,7 +10,8 @@ import { MatSliderChange } from '@angular/material';
 })
 export class WeekSliderComponent implements OnInit {
 
-  @Output() dateRange = new EventEmitter<MomentRange>();
+  @Output()
+  dateRange = new EventEmitter<MomentRange>();
 
   constructor() { }
 
