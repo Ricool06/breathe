@@ -1,1 +1,11 @@
-<mat-slider [min]=0 [max]=13 [invert]="true" (change)="changeDateRange($event)"></mat-slider>
+<div fxLayout="row">
+  <p id="weeks-ago-text">Weeks ago: </p>
+  <mat-slider
+    [min]=0
+    [max]=12
+    [invert]="true"
+    [thumbLabel]="true"
+    [displayWith]="formatThumbLabel"
+    (change)="changeDateRange($event)">
+  </mat-slider>
+</div>

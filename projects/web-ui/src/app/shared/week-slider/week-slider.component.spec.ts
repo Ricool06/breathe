@@ -47,12 +47,13 @@ describe('WeekSliderComponent', () => {
   });
 
   it('should set up the slider with appropriate initial values', () => {
-    const { min, max, value, invert } = slider;
+    const { min, max, value, invert, thumbLabel } = slider;
 
     expect(min).toBe(0);
-    expect(max).toBe(13);
+    expect(max).toBe(12);
     expect(value).toBe(0);
     expect(invert).toBe(true);
+    expect(thumbLabel).toBe(true);
   });
 
   it('should emit the week selected', () => {

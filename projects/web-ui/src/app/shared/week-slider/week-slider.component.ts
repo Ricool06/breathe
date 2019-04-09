@@ -25,6 +25,10 @@ export class WeekSliderComponent implements OnInit {
     this.emitMomentRange(value);
   }
 
+  formatThumbLabel(weeksAgo: number): string {
+    return `${weeksAgo}w`;
+  }
+
   private emitMomentRange(weeksAgo: number) {
     const dateTo = moment().subtract(weeksAgo, 'weeks');
     const dateFrom = dateTo.clone().subtract(7, 'days');
