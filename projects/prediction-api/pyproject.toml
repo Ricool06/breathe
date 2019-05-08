@@ -2,15 +2,20 @@
 name = "prediction-api"
 version = "0.1.0"
 description = ""
-authors = ["Ricool06 <ricoolohsix@hotmail.com>"]
+authors = ["Ricool06"]
+
+[tool.poetry.scripts]
+start = "prediction_api:main"
 
 [tool.poetry.dependencies]
 python = "^2.7"
 tensorflow = "^1.13"
 keras = "^2.2"
+flask = "^1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
+dredd_hooks = "^0.2.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
