@@ -6,6 +6,7 @@ authors = ["Ricool06"]
 
 [tool.poetry.scripts]
 start = "prediction_api:main"
+create_model = "prediction_api:create_model"
 
 [tool.poetry.dependencies]
 python = "^3.7"
