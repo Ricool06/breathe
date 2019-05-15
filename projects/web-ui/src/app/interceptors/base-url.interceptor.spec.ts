@@ -35,4 +35,20 @@ describe('Interceptor: BaseUrl', () => {
       httpMock.verify();
     })
   );
+
+  it(
+    'should replace the base url in a predict request with the env var for the prediction API base url',
+    inject([HttpClient], (httpClient: HttpClient) => {
+      const mockPath = '/predict?someParam=12345678';
+
+      const { host, port, rootPath } = environment.predictionApi;
+      const expectedUrl = `${host}:${port}${rootPath}${mockPath}`;
+
+      httpClient.get(mockPath).subscribe(response => expect(response).toBeTruthy());
+      const receivedRequest = httpMock.expectOne(expectedUrl);
+
+      receivedRequest.flush({ data: '¯\_(ツ)_/¯' });
+      httpMock.verify();
+    })
+  );
 });

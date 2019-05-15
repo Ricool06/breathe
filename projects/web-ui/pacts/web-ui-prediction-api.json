@@ -1,0 +1,58 @@
+{
+  "consumer": {
+    "name": "web-ui"
+  },
+  "provider": {
+    "name": "prediction-api"
+  },
+  "interactions": [
+    {
+      "description": "a request for predictions",
+      "providerState": "i have predictions to give",
+      "request": {
+        "method": "GET",
+        "path": "/predict",
+        "query": "latitude=39.2133&longitude=117.1837&parameter=pm10",
+        "matchingRules": {
+          "$.query.latitude[0]": {
+            "match": "type"
+          },
+          "$.query.longitude[0]": {
+            "match": "type"
+          },
+          "$.query.parameter[0]": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        "body": {
+          "predictions": [
+            {
+              "timestamp": 1557926670,
+              "value": 820.4
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body.predictions": {
+            "min": 1
+          },
+          "$.body.predictions[*].*": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}

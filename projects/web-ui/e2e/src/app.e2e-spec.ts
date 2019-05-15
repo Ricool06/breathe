@@ -9,6 +9,7 @@ import { Server } from 'http';
 import * as url from 'url';
 import { LatestResult } from 'src/app/model';
 import * as moment from 'moment';
+import { Pact, Matchers } from '@pact-foundation/pact';
 
 let transactionsMap: Map<string, any>;
 
@@ -17,8 +18,9 @@ describe('workspace-project App', () => {
   let openaqBlueprint;
   let openaqBlueprintFilePath: string;
   let mockOpenaqApiServer: Server;
+  let predictionApiProvider: Pact;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     transactionsMap = new Map<string, any>();
 
     openaqBlueprintFilePath = `${__dirname}/../../blueprints/openaq.apib.md`;
@@ -30,9 +32,51 @@ describe('workspace-project App', () => {
     mockOpenaqApi.all('*', matchRequestWithResponse);
 
     mockOpenaqApiServer = mockOpenaqApi.listen(environment.openaqApi.port);
+
+    predictionApiProvider = new Pact({
+      consumer: 'web-ui',
+      provider: 'prediction-api',
+      port: environment.predictionApi.port,
+      dir: `${__dirname}/../../pacts`,
+    });
+
+    const { eachLike, somethingLike } = Matchers;
+
+    await predictionApiProvider
+      .setup()
+      .then(() => {
+        return predictionApiProvider.addInteraction({
+          state: 'i have predictions to give',
+          uponReceiving: 'a request for predictions',
+          withRequest: {
+            method: 'GET',
+            path: '/predict',
+            query: {
+              latitude: somethingLike('39.2133'),
+              longitude: somethingLike('117.1837'),
+              parameter: somethingLike('pm10'),
+            },
+          },
+          willRespondWith: {
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+            body: {
+              predictions: eachLike({ timestamp: 1557926670, value: 820.4 }),
+            },
+          },
+        });
+      });
   });
 
-  afterAll(() => mockOpenaqApiServer.close());
+  afterAll(() => {
+    mockOpenaqApiServer.close();
+
+    predictionApiProvider.verify();
+    predictionApiProvider.finalize();
+  });
 
   beforeEach(() => {
     dt.compile(openaqBlueprint, openaqBlueprintFilePath, (error, result) => {
@@ -85,6 +129,10 @@ describe('workspace-project App', () => {
 
     it('should display an historical location result measurements chart', () => {
       expect(page.getHistoricalResultsChart().isDisplayed()).toBe(true);
+    });
+
+    it('should display a chart of predicted measurements chart', () => {
+      expect(page.getPredictedResultsChart().isDisplayed()).toBe(true);
     });
 
     it('should display a week slider', () => {

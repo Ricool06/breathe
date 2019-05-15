@@ -30,6 +30,10 @@ export class MapPage {
     return element(by.css('mat-bottom-sheet-container app-historical-results-chart canvas'));
   }
 
+  getPredictedResultsChart() {
+    return element(by.css('mat-bottom-sheet-container app-predictions-chart canvas'));
+  }
+
   getWeekSlider() {
     return element(by.css('mat-bottom-sheet-container mat-slider'));
   }
