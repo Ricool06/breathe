@@ -125,4 +125,3 @@ dmypy.json
 setup.py
 .vscode/
 .idea/
-*.h5

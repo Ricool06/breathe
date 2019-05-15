@@ -27,10 +27,10 @@ def create_model():
   history = model.fit_generator(
     training_generator,
     validation_data=validation_generator,
-    epochs=500,
+    epochs=2000,
     callbacks=[
       LambdaCallback(on_epoch_end=lambda epoch, logs: model.reset_states()),
-      ModelCheckpoint('pollution_forecast_model.h5', save_best_only=True)
+      ModelCheckpoint('pollution_forecast_model_4.h5', save_best_only=True)
       ],
     shuffle=False
   )
@@ -58,10 +58,10 @@ def reshape_data_to_fit(values, batch_size):
 
 def construct_untrained_model(batch_size, stateful):
   model = Sequential()
-  model.add(LSTM(50, batch_input_shape=(batch_size, None, 1), stateful=True, return_sequences=False))
+  model.add(LSTM(500, batch_input_shape=(batch_size, None, 1), stateful=True, return_sequences=False))
   model.add(Dense(1))
 
-  optimizer = RMSprop()
+  optimizer = RMSprop(0.0005)
   model.compile(loss='mean_squared_error', optimizer=optimizer)
   return model
 
