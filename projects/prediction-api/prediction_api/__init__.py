@@ -6,7 +6,7 @@ __version__ = '0.1.0'
 server = None
 
 def main():
-  app.run()
+  app.run(port=5890)
   # server = Process(target=app.run)
   # server.start()
 

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse as parse_date
 import numpy
 from keras.preprocessing.sequence import TimeseriesGenerator
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 def create_model():
   batch_size = 128
@@ -22,21 +22,21 @@ def create_model():
   validation_longitude = '117.1837'
   validation_generator = prepare_series_generator(validation_latitude, validation_longitude, batch_size, length)
 
-  model = construct_untrained_model(batch_size, stateful=True)
+  model = construct_untrained_model(batch_size, stateful=False)
 
   history = model.fit_generator(
     training_generator,
-    validation_data=validation_generator,
-    epochs=2000,
+    validation_data=training_generator,
+    epochs=100,
     callbacks=[
       LambdaCallback(on_epoch_end=lambda epoch, logs: model.reset_states()),
-      ModelCheckpoint('pollution_forecast_model_4.h5', save_best_only=True)
+      ModelCheckpoint('pollution_forecast_model_5.h5', save_best_only=True)
       ],
     shuffle=False
   )
 
 def prepare_series_generator(latitude, longitude, batch_size, length):
-  times, values = fetch_test_data('pm10', latitude, longitude)
+  times, values = fetch_test_data('pm25', latitude, longitude)
 
   scaled_values = reshape_data_to_fit(values, batch_size)
 
@@ -53,16 +53,16 @@ def reshape_data_to_fit(values, batch_size):
   number_of_values_to_keep = len(values) - number_of_values_to_remove
   values_cropped = values[-number_of_values_to_keep:]
 
-  scaler = StandardScaler()
+  scaler = MinMaxScaler(feature_range=(0, 1))
   return scaler.fit_transform(values_cropped.reshape(-1, 1))
 
 def construct_untrained_model(batch_size, stateful):
   model = Sequential()
-  model.add(LSTM(500, batch_input_shape=(batch_size, None, 1), stateful=True, return_sequences=False))
+  model.add(LSTM(4, batch_input_shape=(batch_size, None, 1), stateful=True, return_sequences=False))
   model.add(Dense(1))
 
   optimizer = RMSprop(0.0005)
-  model.compile(loss='mean_squared_error', optimizer=optimizer)
+  model.compile(loss='mean_squared_error', optimizer='adam')
   return model
 
 
@@ -84,14 +84,17 @@ def get_measurements_from_api(pollutant, latitude, longitude):
       'https://api.openaq.org/v1/measurements',
       params={
         'coordinates': latitude + ',' + longitude,
-        'limit': 10000,
-        'page': page,
-        'radius': 100,
-        'date_from': now.isoformat(),
-        'date_from': (now - timedelta(days=90)).isoformat(),
-        'parameter': pollutant
-      }
-    ).json()
+        'radius': '100',
+        'has_geo': 'true',
+        'limit': '10000',
+        'date_from': (now - timedelta(days=90)).isoformat() + 'Z',
+        'date_to': now.isoformat() + 'Z',
+        'parameter': pollutant,
+        'page': str(page),
+      },
+    )
+
+    response = response.json()
 
     should_get_next_page = len(response["results"]) > 0
     page += 1
@@ -114,7 +117,7 @@ def format_results(results):
       int(parse_date(result["date"]["utc"]).timestamp()),
       result["value"]
     ])
-  
+
   pollutant_history = numpy.array(pollutant_history)
   return pollutant_history[pollutant_history[:, 0].argsort()]
 

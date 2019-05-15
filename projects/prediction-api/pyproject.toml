@@ -21,6 +21,7 @@ pandas = "^0.24.2"
 scikit-learn = "^0.20.3"
 vcrpy = "^2.0"
 tensorflow-gpu = "^1.13"
+pact-python = "^0.18.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
