@@ -1,3 +1,23 @@
+resource "aws_iam_role" "prediction_api" {
+  name = "prediction_api_role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ecs.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+
 resource "aws_ecs_cluster" "prediction_api" {
   name = "prediction_api_cluster"
 }
