@@ -7,7 +7,7 @@ matrix:
     cache: npm
     addons:
       chrome: stable
-  - env: PROJECT=projects/web-ui/
+  - env: PROJECT=projects/prediction-api/
     language: python
     python: "3.7"
   - env: PROJECT=projects/infrastructure/
