@@ -22,7 +22,7 @@ describe('PredictionEffects', () => {
         PredictionEffects,
         provideMockActions(() => actions$),
         { provide: PredictionsService, useValue: predictionsService },
-      ]
+      ],
     });
 
     effects = TestBed.get(PredictionEffects);
