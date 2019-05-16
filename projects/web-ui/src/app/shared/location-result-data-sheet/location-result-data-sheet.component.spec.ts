@@ -12,7 +12,9 @@ import { PruneNonLatestMeasurementsPipe } from 'src/app/pipes/prune-non-latest-m
 import { PruneRepeatedMeasurementsPipe } from 'src/app/pipes/prune-repeated-measurements.pipe';
 import { cloneDeep } from 'lodash';
 import { StoreModule, Store } from '@ngrx/store';
-import { LoadHistoricalMeasurementsSuccess, LoadHistoricalMeasurements, HistoricalMeasurementActionTypes } from 'src/app/actions/historical-measurement.actions';
+import {
+  LoadHistoricalMeasurementsSuccess, LoadHistoricalMeasurements, HistoricalMeasurementActionTypes
+} from 'src/app/actions/historical-measurement.actions';
 import { LatLng } from 'leaflet';
 import { LoadPredictionsSuccess, LoadPredictions, PredictionActionTypes } from 'src/app/actions/prediction.actions';
 
