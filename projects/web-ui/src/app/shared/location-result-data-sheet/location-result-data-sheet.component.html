@@ -25,4 +25,11 @@
       </div>
     </div>
   </div>
+  <div fxLayout="row">
+    <div fxFlex="grow">
+      <div fxLayout="column">
+        <app-predictions-chart [predictions]="predictions$ | async"></app-predictions-chart>
+      </div>
+    </div>
+  </div>
 </div>

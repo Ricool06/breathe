@@ -46,3 +46,4 @@ Thumbs.db
 .temp/
 .serverless/
 blueprints/*.json
+logs

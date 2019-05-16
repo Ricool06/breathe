@@ -9,6 +9,11 @@ export const environment = {
     port: 3000,
     rootPath: '',
   },
+  predictionApi: {
+    host: 'http://localhost',
+    port: 5890,
+    rootPath: '',
+  },
 };
 
 /*

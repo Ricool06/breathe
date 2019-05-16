@@ -1,11 +1,12 @@
-import { State, selectLocationResults, selectMeasurementsResults } from '.';
-import { LatestResult, MeasurementsResult } from '../model';
+import { State, selectLocationResults, selectMeasurementsResults, selectPredictions } from '.';
+import { LatestResult, MeasurementsResult, Prediction } from '../model';
 import * as swagger from '../../../blueprints/swagger.json';
 import { cloneDeep } from 'lodash';
 
 describe('Root state', () => {
   let latestResults: LatestResult[];
   let measurementResults: MeasurementsResult[];
+  let predictions: Prediction[];
   let state: State;
 
   beforeEach(() => {
@@ -15,12 +16,22 @@ describe('Root state', () => {
     measurementResults =
       cloneDeep(swagger.paths['/measurements'].get.responses[200].examples['application/json'].results);
 
+    predictions = [
+      {
+        timestamp: 1557937766,
+        value: 800,
+      },
+    ];
+
     state = {
       locationResultState: {
         locationResults: latestResults,
       },
       historicalMeasurementState: {
         results: measurementResults,
+      },
+      predictionsState: {
+        predictions,
       },
   };
 
@@ -35,6 +46,12 @@ describe('Root state', () => {
   describe('MeasurementsResults selector', () => {
     it('should retrieve all measurements results from the state', () => {
       expect(selectMeasurementsResults(state)).toBe(measurementResults);
+    });
+  });
+
+  describe('Predictions selector', () => {
+    it('should retrieve all predictions from the state', () => {
+      expect(selectPredictions(state)).toBe(predictions);
     });
   });
 });

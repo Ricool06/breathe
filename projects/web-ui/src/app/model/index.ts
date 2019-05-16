@@ -44,6 +44,11 @@ export interface MeasurementsResult {
   date: MeasurementsResultDate;
 }
 
+export interface Prediction {
+  timestamp: number;
+  value: number;
+}
+
 export enum PollutionDescriptor {
   'Unknown',
   'Good',

@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "prediction-api"
+version = "0.1.0"
+description = ""
+authors = ["Ricool06"]
+
+[tool.poetry.scripts]
+start = "prediction_api:main"
+create_model = "prediction_api:create_model"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+keras = "^2.2"
+flask = "^1.0"
+requests = "^2.21"
+numpy = "^1.16"
+pandas = "^0.24.2"
+scikit-learn = "^0.20.3"
+vcrpy = "^2.0"
+pact-python = "^0.18.0"
+tensorflow = "^1.13"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

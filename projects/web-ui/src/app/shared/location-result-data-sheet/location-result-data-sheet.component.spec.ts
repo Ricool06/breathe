@@ -4,7 +4,7 @@ import { LocationResultDataSheetComponent } from './location-result-data-sheet.c
 import * as swagger from '../../../../blueprints/swagger.json';
 import * as fromRoot from '../../reducers';
 import { MAT_BOTTOM_SHEET_DATA, MatGridListModule } from '@angular/material';
-import { LatestResult, Measurement, MeasurementsResult, MomentRange } from 'src/app/model';
+import { LatestResult, Measurement, MeasurementsResult, MomentRange, Prediction } from 'src/app/model';
 import { Component, Input, PipeTransform, Pipe, Output, EventEmitter } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import * as moment from 'moment';
@@ -12,8 +12,11 @@ import { PruneNonLatestMeasurementsPipe } from 'src/app/pipes/prune-non-latest-m
 import { PruneRepeatedMeasurementsPipe } from 'src/app/pipes/prune-repeated-measurements.pipe';
 import { cloneDeep } from 'lodash';
 import { StoreModule, Store } from '@ngrx/store';
-import { LoadHistoricalMeasurementsSuccess, LoadHistoricalMeasurements } from 'src/app/actions/historical-measurement.actions';
+import {
+  LoadHistoricalMeasurementsSuccess, LoadHistoricalMeasurements, HistoricalMeasurementActionTypes
+} from 'src/app/actions/historical-measurement.actions';
 import { LatLng } from 'leaflet';
+import { LoadPredictionsSuccess, LoadPredictions, PredictionActionTypes } from 'src/app/actions/prediction.actions';
 
 @Component({
   selector: 'app-single-result-chart',
@@ -29,6 +32,14 @@ import { LatLng } from 'leaflet';
 }) class MockHistoricalResultsChartComponent {
   @Input()
   measurementsResults: MeasurementsResult[];
+}
+
+@Component({
+  selector: 'app-predictions-chart',
+  template: '',
+}) class MockPredictionsChartComponent {
+  @Input()
+  predictions: Prediction[];
 }
 
 @Component({
@@ -80,6 +91,7 @@ describe('LocationResultDataSheetComponent', () => {
         LocationResultDataSheetComponent,
         MockSingleResultChartComponent,
         MockHistoricalResultsChartComponent,
+        MockPredictionsChartComponent,
         PruneNonLatestMeasurementsPipe,
         PruneRepeatedMeasurementsPipe,
         MockHumanizeDatePipe,
@@ -178,10 +190,12 @@ describe('LocationResultDataSheetComponent', () => {
 
     jasmine.clock().mockDate(dateTo.toDate());
     spyOn(store, 'dispatch').and.callFake((action: LoadHistoricalMeasurements) => {
-      expect(action.payload.coordinates).toEqual(coordinates);
-      expect(action.payload.dateFrom.toISOString()).toEqual(dateFrom.toISOString());
-      expect(action.payload.dateTo.toISOString()).toEqual(dateTo.toISOString());
-      done();
+      if (action.type === HistoricalMeasurementActionTypes.LoadHistoricalMeasurements) {
+        expect(action.payload.coordinates).toEqual(coordinates);
+        expect(action.payload.dateFrom.toISOString()).toEqual(dateFrom.toISOString());
+        expect(action.payload.dateTo.toISOString()).toEqual(dateTo.toISOString());
+        done();
+      }
     });
 
     createSheetWithData(locationResult);
@@ -199,10 +213,10 @@ describe('LocationResultDataSheetComponent', () => {
 
     jasmine.clock().mockDate(dateTo.toDate());
     spyOn(store, 'dispatch').and.callFake((action: LoadHistoricalMeasurements) => {
-      expect(action.payload.coordinates).toEqual(coordinates);
-      expect(action.payload.dateFrom.toISOString()).toEqual(dateFrom.toISOString());
-      expect(action.payload.dateTo.toISOString()).toEqual(dateTo.toISOString());
-      done();
+        expect(action.payload.coordinates).toEqual(coordinates);
+        expect(action.payload.dateFrom.toISOString()).toEqual(dateFrom.toISOString());
+        expect(action.payload.dateTo.toISOString()).toEqual(dateTo.toISOString());
+        done();
     });
 
     const slider: MockWeekSliderComponent =
@@ -210,5 +224,42 @@ describe('LocationResultDataSheetComponent', () => {
     slider.dateRange.emit({ dateFrom, dateTo });
 
     jasmine.clock().uninstall();
+  });
+
+  it('should push predictions to the predictions chart', () => {
+    const predictions: Prediction[] = [
+      {
+        timestamp: 1557936041,
+        value: 800,
+      },
+      {
+        timestamp: 1557939641,
+        value: 400,
+      },
+    ];
+
+    store.dispatch(new LoadPredictionsSuccess({ predictions }));
+
+    createSheetWithData(locationResult);
+
+    const mockChart: MockPredictionsChartComponent =
+      fixture.debugElement.query(By.directive(MockPredictionsChartComponent)).componentInstance;
+
+    expect(mockChart.predictions).toEqual(predictions);
+  });
+
+  it('should dispatch an action to load predictions on creation', (done) => {
+    const { latitude, longitude } = locationResult.coordinates;
+    const coordinates = new LatLng(latitude, longitude);
+
+    spyOn(store, 'dispatch').and.callFake((action: LoadPredictions) => {
+      if (action.type === PredictionActionTypes.LoadPredictions) {
+        expect(action.payload.coordinates).toEqual(coordinates);
+        expect(action.payload.parameter).toEqual('pm25');
+        done();
+      }
+    });
+
+    createSheetWithData(locationResult);
   });
 });
