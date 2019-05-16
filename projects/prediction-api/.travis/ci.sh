@@ -1,6 +1,4 @@
 poetry install
 poetry run pytest
 
-serverpid=$BASHPID
-poetry run start & dredd
-kill $serverpid
+poetry run start & sleep 8 && poetry run pact-verifier --provider-base-url=http://localhost:5890 ../web-ui/pacts

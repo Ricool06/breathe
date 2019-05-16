@@ -4,7 +4,6 @@ import requests
 from datetime import datetime, timedelta
 from dateutil.parser import parse as parse_date
 import numpy
-from matplotlib import pyplot
 from keras.models import load_model
 from keras.preprocessing.sequence import TimeseriesGenerator
 from sklearn.preprocessing import StandardScaler

@@ -3,24 +3,11 @@ import requests
 import numpy
 from dateutil.parser import parse as parse_date
 from datetime import datetime, timedelta
-# from keras.preprocessing.sequence import TimeseriesGenerator
-# from keras import Sequential
-# from keras.layers import LSTM, Dense, Activation, CuDNNLSTM
-# from keras.models import load_model
 import keras
-from matplotlib import pyplot
-# from keras import backend as K
-# from keras.callbacks import TerminateOnNaN, LambdaCallback
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from prediction_api.ml_model.create_model import fetch_test_data, smooth_values, construct_untrained_model
-# from keras.optimizers import SGD, RMSprop
-
 
 app = Flask(__name__)
-
-@app.route('/message')
-def message():
-    return 'Hello, World!\n'
 
 @app.route('/predict')
 def predict():
@@ -47,12 +34,12 @@ def predict():
   predicted_values = model.predict(scaled_values.reshape(batch_size, len(scaled_values) // batch_size, 1), batch_size=batch_size)
 
   hour_in_seconds = 3600
-  start_predicted_time = times_cropped[-1]
+  start_predicted_time = times_cropped[-1] + hour_in_seconds
+  print('TIME::::::')
+  print(start_predicted_time)
   end_predicted_time = (hour_in_seconds * len(predicted_values)) + start_predicted_time
   predicted_times = [time for time in range(start_predicted_time, end_predicted_time, hour_in_seconds)]
-  future_predicted_values = predicted_values[-(steps_in_future * batch_size):]
-  future_predicted_times = predicted_times[-(steps_in_future * batch_size) :]
-  
+
   rescaled_predicted_values = scaler.inverse_transform(predicted_values)
 
   response_body = {

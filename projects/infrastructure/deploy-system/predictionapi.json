@@ -1,0 +1,15 @@
+[
+  {
+    "name": "prediction-api",
+    "image": "ricool06/prediction-api",
+    "cpu": 10,
+    "memory": 512,
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 5890,
+        "hostPort": 5890
+      }
+    ]
+  }
+]

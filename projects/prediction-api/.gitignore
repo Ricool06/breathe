@@ -125,3 +125,4 @@ dmypy.json
 setup.py
 .vscode/
 .idea/
+*.zip

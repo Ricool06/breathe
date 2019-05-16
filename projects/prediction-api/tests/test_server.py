@@ -6,6 +6,7 @@ import sys
 import keras
 import vcr
 from sklearn.preprocessing import StandardScaler
+import numpy
 
 sys.modules['prediction_api.model_loader'] = MagicMock()
 from prediction_api.model_loader import model as mock_model
@@ -30,7 +31,6 @@ def client():
   client = app.test_client()
   yield client
 
-# @vcr.use_cassette()
 @custom_vcr.use_cassette('fixtures/vcr_cassettes/measurements.yaml')
 def test_predict(client, monkeypatch):
   query = {
@@ -39,14 +39,12 @@ def test_predict(client, monkeypatch):
     'longitude': '113.2711'
   }
 
+  mock_model.predict.return_value = numpy.array([[0.2]])
   response = client.get('/predict', query_string=query)
 
-  mock_model.predict.assert_called_once_with(caught_response_dict['response'])
+  mock_model.predict.assert_called_once()
 
   body = json.loads(response.data)
 
-  # mock_model = MagicMock()
-  # mock_model
-
-  assert body["predictions"][0]["timestamp"] == 1557873674
-  assert body["predictions"][0]["data"] == 800
+  assert body["predictions"][0]['timestamp'] == 1557874800 # Value in VCR fixture
+  assert isinstance(body["predictions"][0]['value'], float)
