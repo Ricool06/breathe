@@ -4,7 +4,6 @@ matrix:
     env: PROJECT=projects/web-ui/
     language: node_js
     node_js: node
-    cache: npm
     addons:
       chrome: stable
   - env: PROJECT=projects/prediction-api/
