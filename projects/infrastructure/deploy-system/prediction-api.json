@@ -1,0 +1,23 @@
+[
+  {
+    "name": "prediction-api",
+    "image": "ricool06/prediction-api",
+    "cpu": 512,
+    "memory": 1024,
+    "essential": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+          "awslogs-group": "awslogs-prediction-api",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "awslogs-example"
+      }
+    },
+    "portMappings": [
+      {
+        "containerPort": 5890,
+        "hostPort": 5890
+      }
+    ]
+  }
+]

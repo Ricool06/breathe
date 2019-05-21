@@ -31,7 +31,7 @@ resource "aws_lambda_function" "web_ui" {
   source_code_hash = "${local.web_ui_local_zip_hash}"
 
   handler = "lambda.universal"
-  runtime = "nodejs6.10"
+  runtime = "nodejs8.10"
 
   role = "${aws_iam_role.web_ui_lambda_exec.arn}"
 }

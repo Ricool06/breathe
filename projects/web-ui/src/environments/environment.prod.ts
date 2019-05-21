@@ -6,8 +6,8 @@ export const environment = {
     rootPath: '/v1',
   },
   predictionApi: {
-    host: 'http://ec2-34-253-216-253.eu-west-1.compute.amazonaws.com',
-    port: 5890,
-    rootPath: '',
+    host: 'https://6niay35k54.execute-api.eu-west-1.amazonaws.com',
+    port: 443,
+    rootPath: '/staging',
   },
 };

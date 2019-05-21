@@ -19,7 +19,9 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="grow">
+      <hr>
       <div fxLayout="column">
+        <h2 class="mat-h2">Pollutant History:</h2>
         <app-historical-results-chart [measurementsResults]="measurementsResults$ | async"></app-historical-results-chart>
         <app-week-slider (dateRange)="changeDateRange($event)"></app-week-slider>
       </div>
@@ -27,7 +29,9 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="grow">
+      <hr>
       <div fxLayout="column">
+        <h2 class="mat-h2">PM2.5 Forecast:</h2>
         <app-predictions-chart [predictions]="predictions$ | async"></app-predictions-chart>
       </div>
     </div>

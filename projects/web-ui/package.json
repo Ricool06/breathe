@@ -11,7 +11,7 @@
     "e2e": "ng e2e",
     "ci:checks": "npm run blueprint2swagger && npm run lint && npm run test:ci && npm run e2e",
     "build:browser:prod": "ng build --prod",
-    "build:browser:serverless": "ng build --prod --base-href /production/",
+    "build:browser:serverless": "ng build --prod --base-href /staging/",
     "build:serverless": "npm run blueprint2swagger && npm run build:browser:serverless && npm run build:server:serverless && npm run package",
     "build:prod": "npm run build:browser:prod && npm run build:server:prod",
     "server": "node local.js",
@@ -49,6 +49,7 @@
     "leaflet": "^1.4.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
+    "node-sass": "^4.12.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
