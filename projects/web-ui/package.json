@@ -73,7 +73,7 @@
     "apib2swagger": "^1.8.0",
     "codelyzer": "~4.5.0",
     "dredd-transactions": "^6.5.2",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "jasmine-core": "~2.99.1",
     "jasmine-marbles": "^0.4.1",
     "jasmine-spec-reporter": "~4.2.1",
